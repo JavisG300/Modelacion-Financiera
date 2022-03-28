@@ -14,9 +14,9 @@ def main(S0,K,TLR,T,O,OP):
 
 def valuacion(OP,superior_limit, inferior_limit):
     if OP >= superior_limit:
-        print("Esta sobrevaluado")
+        print("Si vale: " + str(OP) + " esta sobrevaluado")
     elif OP <= inferior_limit:
-        print("Esta subvaluado")
+        print("Si vale: " + str(OP) + " esta subvaluado")
 
 
 S0   = 12     #Precio hoy
