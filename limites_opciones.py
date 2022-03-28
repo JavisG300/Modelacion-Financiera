@@ -9,11 +9,11 @@ def main(S0,K,TLR,T,O):
         superior_limit = K*exp(-TLR*T)
         print(str(inferior_limit) + ' <= p <= ' + str(superior_limit))
 
-S0   = 37     #Precio hoy
-K    = 40     #Precio de ejercicio
-TLR  = 0.05   #Tasa
-T    = 6/12      #Vencimiento en meses
-O    = False   #Bandera True es call, False es put
+S0   = 12     #Precio hoy
+K    = 15     #Precio de ejercicio
+TLR  = 0.06   #Tasa
+T    = 1/12   #Vencimiento en meses
+O    = False  #Bandera True es call, False es put
 
 
 if __name__=='__main__':
