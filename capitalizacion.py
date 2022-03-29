@@ -1,5 +1,5 @@
 from interes_compuesto import inter
-def main():
+def cap():
     cap = int(input(""" Elige el periodo de capitalización:
 
     1) Anual
@@ -21,4 +21,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    cap()
