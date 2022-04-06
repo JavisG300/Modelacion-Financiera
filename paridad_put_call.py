@@ -2,6 +2,7 @@ import numpy as np
 def main(c,p,k,r,S0,t):
     call = c + k*np.exp(-r*t)
     put  = p + S0 
+    print("call:", call," Put: ",put)
     estrategia(c,p,k,r,S0,t,put,call)
 
 def estrategia(c,p,k,r,S0,t,put,call):
@@ -29,12 +30,12 @@ def estrategia(c,p,k,r,S0,t,put,call):
     elif call == put:
         print('No hay oportunidad de arbitraje')
 
-c  = 3         #valor del call
-p  = 2.25      #valor del put
-k  = 30        #precio de ejercicio
-r  = 0.10      #tasa de interes
-S0 = 31        #precio al inicio
-t  = 3/12      #tiempo de vencimiento
+c  = 2.162771        #valor del call
+p  = 1.903577      #valor del put
+k  = 51        #precio de ejercicio
+r  = 0.05      #tasa de interes
+S0 = 50        #precio al inicio
+t  = 6/12      #tiempo de vencimiento
 
 
 if __name__ == '__main__':
