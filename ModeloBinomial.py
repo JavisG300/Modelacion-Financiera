@@ -3,18 +3,24 @@ from urllib.request import ProxyBasicAuthHandler
 import numpy as np
 from pandas import DataFrame #Para hacer una tabla con los datos
 def nodos(s,u,d):
+    abecedario = list(string.ascii_uppercase)
+    dic_nodos = {}
     lista_nodos = [s]
-    for i in range(1,n*2):
-            up = s*u
-            up = round(up,2)
-            if up not in lista_nodos:
-                lista_nodos.append(up)
-            down = s*d
-            down = round(down,2)
-            if down not in lista_nodos:
-                lista_nodos.append(down)
-
-            s = lista_nodos[i]
+    j = 0
+    for i in range(0,n*2):
+        up = s*u
+        up = round(up,2)
+        if up not in lista_nodos:
+            lista_nodos.append(up)
+        down = s*d
+        down = round(down,2)
+        if down not in lista_nodos:
+            lista_nodos.append(down)
+        s = lista_nodos[i]
+    for i in lista_nodos:
+        dic_nodos[abecedario[j]] = lista_nodos[j] 
+        j += 1
+    print(dic_nodos)
 
 def mbinomial(s,opcion,T,n,r,k,u,d):
     Dt = T/n
@@ -63,4 +69,5 @@ u      = float(input("Indica el porcentaje/probabilidad de subida con la unidad:
 d      = float(input("Indica el porcentaje/probabilidad de bajada con la unidad: "))
 
 if __name__ == '__main__':
-    mbinomial(s,opcion,T,n,r,k,u,d)
+    #mbinomial(s,opcion,T,n,r,k,u,d)
+    nodos(s,u,d)
