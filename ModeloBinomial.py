@@ -25,9 +25,13 @@ def mbinomial(s,opcion,T,n,r,k,u,d):
     if opcion == 1:
         for i in range(1,n+2):
             up = s*u
-            lista_nodos.append(up)
+            up = round(up,2)
+            if up not in lista_nodos:
+                lista_nodos.append(up)
             down = s*d
-            lista_nodos.append(down)
+            down = round(down,2)
+            if down not in lista_nodos:
+                lista_nodos.append(down)
 
             s = lista_nodos[i]
             
