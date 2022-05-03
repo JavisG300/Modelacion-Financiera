@@ -2,6 +2,19 @@ import string
 from urllib.request import ProxyBasicAuthHandler
 import numpy as np
 from pandas import DataFrame #Para hacer una tabla con los datos
+def nodos(s,u,d):
+    lista_nodos = [s]
+    for i in range(1,n*2):
+            up = s*u
+            up = round(up,2)
+            if up not in lista_nodos:
+                lista_nodos.append(up)
+            down = s*d
+            down = round(down,2)
+            if down not in lista_nodos:
+                lista_nodos.append(down)
+
+            s = lista_nodos[i]
 
 def mbinomial(s,opcion,T,n,r,k,u,d):
     Dt = T/n
@@ -21,21 +34,9 @@ def mbinomial(s,opcion,T,n,r,k,u,d):
  #   for i in range(n+1):
  #       VOPC[i,n]=max(cop*(S[i,n]-k),0)
 
-    lista_nodos = [s]
+    
     if opcion == 1:
-        for i in range(1,n+2):
-            up = s*u
-            up = round(up,2)
-            if up not in lista_nodos:
-                lista_nodos.append(up)
-            down = s*d
-            down = round(down,2)
-            if down not in lista_nodos:
-                lista_nodos.append(down)
-
-            s = lista_nodos[i]
-            
-        print(lista_nodos, Propabilidad)
+       pass
     elif opcion == 2:
         pass
     elif opcion == 3:
@@ -54,7 +55,7 @@ Escribe el número de la opción que será valuada
 3) Call Americano
 4) Put Americano
 """)) 
-T      = float(input("Indica el tiempo de vencimiento en años (n/12): "))
+T      = float(input("Indica el tiempo de vencimiento en años (n/12)=: "))
 n      = int(input("Indica el número de periodos: "))
 r      = float(input("Indica la tasa de interés anualizada: "))
 k      = float(input("Indica el precio de ejercicio: "))
