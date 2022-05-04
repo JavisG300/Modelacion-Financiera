@@ -1,7 +1,6 @@
 import string
-from urllib.request import ProxyBasicAuthHandler
-import numpy as np
-from pandas import DataFrame #Para hacer una tabla con los datos
+#import numpy as np
+#from pandas import DataFrame #Para hacer una tabla con los datos
 def nodos(s,u,d,n):
     abecedario = list(string.ascii_uppercase)
     numeros = [numero+1 for numero in range(1,n**n)]
