@@ -1,5 +1,5 @@
 import string
-#import numpy as np
+import numpy as np
 #from pandas import DataFrame #Para hacer una tabla con los datos
 def nodos(s,u,d,n):
     abecedario = list(string.ascii_uppercase)
