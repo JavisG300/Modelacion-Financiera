@@ -1,5 +1,5 @@
 import numpy as np
-def main(c,p,k,r,S0,t):
+def paridad(c,p,k,r,S0,t):
     call = c + k*np.exp(-r*t)
     put  = p + S0 
     estrategia(c,p,k,r,S0,t,put,call)
@@ -38,4 +38,4 @@ t  = 3/12      #tiempo de vencimiento
 
 
 if __name__ == '__main__':
-    main(c,p,k,r,S0,t)
+    paridad(c,p,k,r,S0,t)
