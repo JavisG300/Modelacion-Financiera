@@ -86,6 +86,7 @@ def mbinomial(s,opcion,T,n,r,k,u,d): #Funcion para determinar el precio de la op
             combinancion = factorial(n)/((factorial(i))*(factorial(n-i)))
             cuenta = cuenta + combinancion*(Propabilidad**(n-i))*((uno_probabilidad)**i)*cu 
         valor_del_call = valor_presente1 * cuenta
+        print("El valor del Call Europeo es: ", valor_del_call)
 
     elif opcion == 2:
         pass
