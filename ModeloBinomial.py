@@ -70,7 +70,7 @@ def mbinomial(s,opcion,T,n,r,k,u,d): #Funcion para determinar el precio de la op
     if opcion == 1:
         cuenta = 0
         Nodos = nodos(s,u,d,n)
-        print('\n', Nodos)
+        print('\n','El Call Europeo tiene los siguientes nodos: \n', Nodos)
         lista_de_nodos = []
         for value in Nodos.values():
             valor = value 
@@ -89,7 +89,7 @@ def mbinomial(s,opcion,T,n,r,k,u,d): #Funcion para determinar el precio de la op
     elif opcion == 2:
         cuenta = 0
         Nodos = nodos(s,u,d,n)
-        print('\n', Nodos)
+        print('\n','El Put Europeo tiene los siguientes nodos: \n', Nodos)
         lista_de_nodos = []
         for value in Nodos.values():
             valor = value 
@@ -106,9 +106,37 @@ def mbinomial(s,opcion,T,n,r,k,u,d): #Funcion para determinar el precio de la op
         valor_del_put = valor_presente1 * cuenta
         print("El valor del Put Europeo es: ", valor_del_put)
 
-    elif opcion == 3:
-        pass
-    else:
+    elif opcion == 3: #ESTA MAL TIENES QUE TOMAR EN CUENTA LOS ULTIMOS PUU Y PDD
+        Nodos = nodos(s,u,d,n)
+        print('\n','El Call Europeo tiene los siguientes nodos: \n', Nodos)
+        lista_de_nodos = []
+        for value in Nodos.values():
+            valor = value 
+            lista_de_nodos.append(valor)
+        lcu_y_cd = []
+        for i in range(len(lista_de_nodos)-(n+1)):
+            lcu_y_cd.append(lista_de_nodos[i])
+        lcu_y_cd = lcu_y_cd[::-1]
+        print(lcu_y_cd)
+        for i in range(len(lcu_y_cd)-1):
+            nodo_evaluar = lcu_y_cd[i]
+            up = nodo_evaluar*u
+            down = nodo_evaluar*d
+            call = valor_presente1*(up*Propabilidad + down*uno_probabilidad)
+            rendimiento_ejercer = max(k-nodo_evaluar,0)
+            if rendimiento_ejercer > call:
+                lcu_y_cd[i] = rendimiento_ejercer
+            else:
+                lcu_y_cd[i] = lcu_y_cd[i]
+        lcu_y_cd = lcu_y_cd[::-1]
+        Nodos['A']=lcu_y_cd[0]
+        Nodos['B']=lcu_y_cd[1]
+        Nodos['C']=lcu_y_cd[2]
+        valor_del_call_americano = valor_presente1*(Propabilidad*lcu_y_cd[1] + uno_probabilidad*lcu_y_cd[0])
+        print('El valor del Call Americano es: ', valor_del_call_americano)
+
+
+    elif opcion == 4:
         pass
 
 
