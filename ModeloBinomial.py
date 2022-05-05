@@ -1,3 +1,4 @@
+from asyncio.constants import LOG_THRESHOLD_FOR_CONNLOST_WRITES
 import string
 import numpy as np
 from pandas import DataFrame #Para hacer una tabla con los datos
@@ -12,29 +13,33 @@ def nodos(s,u,d,n):
     longitud = sum(ramas)
     while len(lista_nodos) <= longitud:
         up = s*u
-        up = round(up,2)
-        dif = lista_nodos[i]-up
+        up = round(up,3)
         if up not in lista_nodos:
             lista_nodos.append(up)
-            if lista_nodos[i+1] - lista_nodos[i] < 0.01:
-                lista_nodos = lista_nodos
-            else:
+            integrantes = len(lista_nodos)
+            dif = abs(lista_nodos[integrantes-1] - lista_nodos[integrantes-2]) 
+            if dif <= 0.01:
                 lista_nodos.pop()
+            else:
+                lista_nodos
 
         down = s*d
-        down = round(down,2)
+        down = round(down,3)
         if down not in lista_nodos:
             lista_nodos.append(down)
-            if lista_nodos[i+1] - lista_nodos[i] < 0.01:
-                lista_nodos = lista_nodos
-            else:
+            integrantes = len(lista_nodos)
+            diff = abs(lista_nodos[integrantes-1] - lista_nodos[integrantes-2])  
+            if diff <= 0.01:
                 lista_nodos.pop()
+            else:
+                lista_nodos = lista_nodos
         s = lista_nodos[i+1]
         i+=1
     for i in lista_nodos:
         dic_nodos[abecedario[j]] = lista_nodos[j] 
         j += 1
     print(dic_nodos)
+
 def tabla(s,opcion,T,n,r,k,u,d):
     T = T/12
     Dt = T/n
@@ -50,6 +55,7 @@ def tabla(s,opcion,T,n,r,k,u,d):
     tabla_datos = DataFrame(datos, columns = ['Dato','Valor ingresado'], index=['Tipo de opción','Precio incial del activo subyacente','Precio de ejercicio','Tiempo de vencimiento','Número de periodos','Tasa libre de riesgo','Porcentaje de subida','Porcentaje de bajada', 'Delta t'])
     print('\n')
     print(tabla_datos.round(4))
+
 def mbinomial(s,opcion,T,n,r,k,u,d):
     T = T/12
     Dt = T/n
@@ -87,5 +93,5 @@ d      = float(input("Indica el porcentaje/probabilidad de bajada con la unidad:
 
 if __name__ == '__main__':
     #mbinomial(s,opcion,T,n,r,k,u,d)
-    #nodos(s,u,d,n)
     tabla(s,opcion,T,n,r,k,u,d)
+    nodos(s,u,d,n)
