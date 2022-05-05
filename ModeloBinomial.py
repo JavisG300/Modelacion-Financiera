@@ -51,9 +51,9 @@ def tabla(s,opcion,T,n,r,k,u,d):
         option = 'Call Americano'
     elif opcion == 4:
         option = 'Put Americano'
-    datos={'Dato':['Opción','S0','k','T','n','r','u','d','Dt','Probabilidad a la alza', 'Probabilidad a la baja'],
-    'Valor ingresado':[option, s,k,T,n,r,u,d,Dt,Propabilidad,uno_probabilidad]}
-    tabla_datos = DataFrame(datos, columns = ['Dato','Valor ingresado'], 
+    datos={'Dato         ':['Opción','S0','k','T','n','r','u','d','Dt','Probabilidad a la alza', 'Probabilidad a la baja'],
+    '   Valor ingresado   ':[option, s,k,T,n,r,u,d,Dt,Propabilidad,uno_probabilidad]}
+    tabla_datos = DataFrame(datos, columns = ['Dato         ','   Valor ingresado   '], 
     index=['Tipo de opción','Precio incial del activo subyacente','Precio de ejercicio','Tiempo de vencimiento','Número de periodos',
     'Tasa libre de riesgo','Porcentaje de subida','Porcentaje de bajada', 'Delta t', 'Probabilidad a la alza', 'Probabilidad a la baja'])
     print('\n')
@@ -205,8 +205,7 @@ def main():
     print("""
     ---------------------------------------
     || Resumen de los datos introducidos ||
-    ---------------------------------------
-     """)
+    ---------------------------------------""")
     tabla(s,opcion,T,n,r,k,u,d)
     nodos(s,u,d,n)
     l = mbinomial(s,opcion,T,n,r,k,u,d)
