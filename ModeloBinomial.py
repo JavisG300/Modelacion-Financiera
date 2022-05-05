@@ -1,6 +1,8 @@
 import string                #Para hacer el diccionario de nodos con letras
 import numpy as np
 from pandas import DataFrame #Para hacer una tabla con los datos
+from math import factorial
+
 def nodos(s,u,d,n):
     abecedario = list(string.ascii_uppercase)
     numeros = [numero+1 for numero in range(1,n**n)]
@@ -36,7 +38,7 @@ def nodos(s,u,d,n):
     for i in lista_nodos:
         dic_nodos[abecedario[j]] = lista_nodos[j] 
         j += 1
-    print('\n',dic_nodos)
+    return dic_nodos
 
 def tabla(s,opcion,T,n,r,k,u,d):
     T = T/12
@@ -59,16 +61,32 @@ def tabla(s,opcion,T,n,r,k,u,d):
     print('\n')
     print(tabla_datos.round(4))
 
-def mbinomial(s,opcion,T,n,r,k,u,d):
+def mbinomial(s,opcion,T,n,r,k,u,d): #Funcion para determinar el precio de la opcion
     T = T/12
     Dt = T/n
     Propabilidad = (np.exp(r*Dt) - d)/(u - d)
     uno_probabilidad = 1 - Propabilidad
-    valor_presente1 = np.exp(-r*Dt)
-    valor_presenteT = np.exp(-r*T)
+    valor_presente1 = np.exp(-n*r*Dt)
 
+    #Calculando el valor de la opción
     if opcion == 1:
-       pass
+        cuenta = 0
+        Nodos = nodos(s,u,d,n)
+        lista_de_nodos = []
+        for value in Nodos.values():
+            valor = value 
+            lista_de_nodos.append(valor)
+        print(lista_de_nodos)
+        lcu_y_cd = []
+        for i in range(len(lista_de_nodos)-1,len(lista_de_nodos)-(n+2),-1):
+            lcu_y_cd.append(lista_de_nodos[i])
+            lcu_y_cd = lcu_y_cd[::-1]
+        for i in range(n+1):
+            cu = max(lcu_y_cd[i]-k,0)
+            combinancion = factorial(n)/((factorial(i))*(factorial(n-i)))
+            cuenta = cuenta + combinancion*(Propabilidad**(n-i))*((uno_probabilidad)**i)*cu 
+        valor_del_call = valor_presente1 * cuenta
+
     elif opcion == 2:
         pass
     elif opcion == 3:
@@ -78,7 +96,7 @@ def mbinomial(s,opcion,T,n,r,k,u,d):
 
 
 
-
+print(""" Este programa calcula el modelo binomial para opciones financieras \n """)
 s      = float(input("Indica el precio incial del activo subyacente: "))
 opcion = float(input("""
 Escribe el número de la opción que será valuada
@@ -95,6 +113,6 @@ u      = float(input("Indica el porcentaje/probabilidad de subida con la unidad:
 d      = float(input("Indica el porcentaje/probabilidad de bajada con la unidad: "))
 
 if __name__ == '__main__':
-    #mbinomial(s,opcion,T,n,r,k,u,d)
     tabla(s,opcion,T,n,r,k,u,d)
     nodos(s,u,d,n)
+    mbinomial(s,opcion,T,n,r,k,u,d)
