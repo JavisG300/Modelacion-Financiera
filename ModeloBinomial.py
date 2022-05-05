@@ -14,7 +14,6 @@ def nodos(s,u,d,n):
     longitud = sum(ramas)
     while len(lista_nodos) <= longitud:
         up = s*u
-        #up = round(up,3)
         lista_nodos.append(up)
         integrantes = len(lista_nodos)
         dif = abs(lista_nodos[(integrantes-1)] - lista_nodos[(integrantes-2)])
@@ -25,7 +24,6 @@ def nodos(s,u,d,n):
             lista_nodos
 
         down = s*d
-        #down = round(down,3)
         lista_nodos.append(down)
         integrantes = len(lista_nodos)
         diff = abs(lista_nodos[(integrantes-1)] - lista_nodos[(integrantes-2)])  
