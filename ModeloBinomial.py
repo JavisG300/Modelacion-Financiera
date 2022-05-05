@@ -72,15 +72,15 @@ def mbinomial(s,opcion,T,n,r,k,u,d): #Funcion para determinar el precio de la op
     if opcion == 1:
         cuenta = 0
         Nodos = nodos(s,u,d,n)
+        print('\n', Nodos)
         lista_de_nodos = []
         for value in Nodos.values():
             valor = value 
             lista_de_nodos.append(valor)
-        print(lista_de_nodos)
         lcu_y_cd = []
         for i in range(len(lista_de_nodos)-1,len(lista_de_nodos)-(n+2),-1):
             lcu_y_cd.append(lista_de_nodos[i])
-            lcu_y_cd = lcu_y_cd[::-1]
+        lcu_y_cd = lcu_y_cd[::-1]
         for i in range(n+1):
             cu = max(lcu_y_cd[i]-k,0)
             combinancion = factorial(n)/((factorial(i))*(factorial(n-i)))
@@ -91,21 +91,22 @@ def mbinomial(s,opcion,T,n,r,k,u,d): #Funcion para determinar el precio de la op
     elif opcion == 2:
         cuenta = 0
         Nodos = nodos(s,u,d,n)
+        print('\n', Nodos)
         lista_de_nodos = []
         for value in Nodos.values():
             valor = value 
             lista_de_nodos.append(valor)
-        print(lista_de_nodos)
         lcu_y_cd = []
         for i in range(len(lista_de_nodos)-1,len(lista_de_nodos)-(n+2),-1):
             lcu_y_cd.append(lista_de_nodos[i])
-            lcu_y_cd = lcu_y_cd[::-1]
+        lcu_y_cd = lcu_y_cd[::-1]
+        print(lcu_y_cd)
         for i in range(n+1):
             cu = max(k-lcu_y_cd[i],0)
             combinancion = factorial(n)/((factorial(i))*(factorial(n-i)))
             cuenta = cuenta + combinancion*(Propabilidad**(n-i))*((uno_probabilidad)**i)*cu 
-        valor_del_call = valor_presente1 * cuenta
-        print("El valor del Put Europeo es: ", valor_del_call)
+        valor_del_put = valor_presente1 * cuenta
+        print("El valor del Put Europeo es: ", valor_del_put)
 
     elif opcion == 3:
         pass
