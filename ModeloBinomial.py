@@ -13,26 +13,25 @@ def nodos(s,u,d,n):
     longitud = sum(ramas)
     while len(lista_nodos) <= longitud:
         up = s*u
-        up = round(up,3)
-        if up not in lista_nodos:
-            lista_nodos.append(up)
-            integrantes = len(lista_nodos)
-            dif = abs(lista_nodos[integrantes-1] - lista_nodos[integrantes-2]) 
-            if dif <= 0.01:
-                lista_nodos.pop()
-            else:
-                lista_nodos
+        #up = round(up,3)
+        lista_nodos.append(up)
+        integrantes = len(lista_nodos)
+        dif = abs(lista_nodos[(integrantes-1)] - lista_nodos[(integrantes-2)])
+        if dif <= 0.01:
+           lista_nodos.pop()
+                
+        else:
+            lista_nodos
 
         down = s*d
-        down = round(down,3)
-        if down not in lista_nodos:
-            lista_nodos.append(down)
-            integrantes = len(lista_nodos)
-            diff = abs(lista_nodos[integrantes-1] - lista_nodos[integrantes-2])  
-            if diff <= 0.01:
-                lista_nodos.pop()
-            else:
-                lista_nodos = lista_nodos
+        #down = round(down,3)
+        lista_nodos.append(down)
+        integrantes = len(lista_nodos)
+        diff = abs(lista_nodos[(integrantes-1)] - lista_nodos[(integrantes-2)])  
+        if diff <= 0.01:
+            lista_nodos.pop()
+        else:
+            lista_nodos = lista_nodos
         s = lista_nodos[i+1]
         i+=1
     for i in lista_nodos:
