@@ -1,5 +1,4 @@
-from asyncio.constants import LOG_THRESHOLD_FOR_CONNLOST_WRITES
-import string
+import string                #Para hacer el diccionario de nodos con letras
 import numpy as np
 from pandas import DataFrame #Para hacer una tabla con los datos
 def nodos(s,u,d,n):
@@ -37,11 +36,13 @@ def nodos(s,u,d,n):
     for i in lista_nodos:
         dic_nodos[abecedario[j]] = lista_nodos[j] 
         j += 1
-    print(dic_nodos)
+    print('\n',dic_nodos)
 
 def tabla(s,opcion,T,n,r,k,u,d):
     T = T/12
     Dt = T/n
+    Propabilidad = (np.exp(r*Dt) - d)/(u - d)
+    uno_probabilidad = 1 - Propabilidad
     if opcion == 1:
         option = 'Call Europeo'
     elif opcion ==2:
@@ -50,8 +51,11 @@ def tabla(s,opcion,T,n,r,k,u,d):
         option = 'Call Americano'
     elif opcion == 4:
         option = 'Put Americano'
-    datos={'Dato':['Opción','S0','k','T','n','r','u','d','Dt'],'Valor ingresado':[option, s,k,T,n,r,u,d,Dt]}
-    tabla_datos = DataFrame(datos, columns = ['Dato','Valor ingresado'], index=['Tipo de opción','Precio incial del activo subyacente','Precio de ejercicio','Tiempo de vencimiento','Número de periodos','Tasa libre de riesgo','Porcentaje de subida','Porcentaje de bajada', 'Delta t'])
+    datos={'Dato':['Opción','S0','k','T','n','r','u','d','Dt','Probabilidad a la alza', 'Probabilidad a la baja'],
+    'Valor ingresado':[option, s,k,T,n,r,u,d,Dt,Propabilidad,uno_probabilidad]}
+    tabla_datos = DataFrame(datos, columns = ['Dato','Valor ingresado'], 
+    index=['Tipo de opción','Precio incial del activo subyacente','Precio de ejercicio','Tiempo de vencimiento','Número de periodos',
+    'Tasa libre de riesgo','Porcentaje de subida','Porcentaje de bajada', 'Delta t', 'Probabilidad a la alza', 'Probabilidad a la baja'])
     print('\n')
     print(tabla_datos.round(4))
 
