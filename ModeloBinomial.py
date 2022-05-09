@@ -1,8 +1,8 @@
 import string                #Para hacer el diccionario de nodos con letras
-import numpy as np
+import numpy as np           #Para exp
 from pandas import DataFrame #Para hacer una tabla con los datos
 from math import factorial
-from paridad_put_call import paridad
+from paridad_put_call import paridad #Función de paridad put call programada anteriormente
 
 def nodos(s,u,d,n):
     abecedario = list(string.ascii_uppercase)
@@ -173,7 +173,8 @@ def mbinomial(s,opcion,T,n,r,k,u,d): #Funcion para determinar el precio de la op
         return valor_del_put_americano, Nodos
 
 def tabla_comparativa(s,T,n,t,k,u,d):
-    datos={'Opción':['Europeo', 'Europeo','Americano', 'Americano'], 'Precio/Nodos':[mbinomial(s,1,T,n,r,k,u,d),mbinomial(s,2,T,n,r,k,u,d),mbinomial(s,3,T,n,r,k,u,d),mbinomial(s,4,T,n,r,k,u,d)]}
+    datos={'Opción':['Europeo', 'Europeo','Americano', 'Americano'], 'Precio/Nodos':[mbinomial(s,1,T,n,r,k,u,d),
+    mbinomial(s,2,T,n,r,k,u,d),mbinomial(s,3,T,n,r,k,u,d),mbinomial(s,4,T,n,r,k,u,d)]}
     tabla_datos = DataFrame(datos, columns = ['Opción','Precio/Nodos'], 
     index=['Call','Put','Call','Put'])
     print('\n')
