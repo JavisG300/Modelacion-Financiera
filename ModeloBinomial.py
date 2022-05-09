@@ -230,7 +230,7 @@ def main():
     """)
     tabla_comparativa(s,T,n,r,k,u,d)
     print('\n')
-    Paridad = input(('¿Quieres comprobar la paridad Put-Call entre algunas de las opciones. y/n'))
+    Paridad = input(('¿Quieres comprobar la paridad Put-Call entre algunas de las opciones. y/n: '))
     Paridad = Paridad.lower()
     if Paridad == 'y':
         OpCall = int(input("""
@@ -239,12 +239,14 @@ def main():
         1) Americano
         2) Europeo 
         """))
+        print(f'---Su selección fue el inciso {OpCall} ---\n')
         OpPut = int(input("""
         ¿Qué Put quieres usar? 
 
         1) Americano
         2) Europeo 
         """))
+        print(f'---Su selección fue el inciso {OpPut} ---\n')
         if OpCall == 1:
             c = mbinomial(s,3,T,n,r,k,u,d)
             C = c[0]
