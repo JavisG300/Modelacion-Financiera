@@ -2,6 +2,7 @@ import string                #Para hacer el diccionario de nodos con letras
 import numpy as np
 from pandas import DataFrame #Para hacer una tabla con los datos
 from math import factorial
+from paridad_put_call import paridad
 
 def nodos(s,u,d,n):
     abecedario = list(string.ascii_uppercase)
@@ -65,6 +66,7 @@ def mbinomial(s,opcion,T,n,r,k,u,d): #Funcion para determinar el precio de la op
     Propabilidad = (np.exp(r*Dt) - d)/(u - d)
     uno_probabilidad = 1 - Propabilidad
     valor_presente1 = np.exp(-n*r*Dt)
+    valor_presenteT = np.exp(-r*Dt)
 
     #Calculando el valor de la opción
     if opcion == 1:
@@ -117,11 +119,11 @@ def mbinomial(s,opcion,T,n,r,k,u,d): #Funcion para determinar el precio de la op
         for i in range(len(lcu_y_cd)-1):
             nodo_evaluar = lcu_y_cd[i]
             up = nodo_evaluar*u
-            maxup = max(k-up,0)
+            maxup = max(up-k,0)
             down = nodo_evaluar*d
-            maxdown = max(k-down,0)
-            call = valor_presente1*(maxup*Propabilidad + maxdown*uno_probabilidad)
-            rendimiento_ejercer = max(k-nodo_evaluar,0)
+            maxdown = max(down-k,0)
+            call = valor_presenteT*(maxup*Propabilidad + maxdown*uno_probabilidad)
+            rendimiento_ejercer = max(nodo_evaluar-k,0)
             if rendimiento_ejercer > call:
                 lcu_y_cd[i] = rendimiento_ejercer
             else:
@@ -132,7 +134,7 @@ def mbinomial(s,opcion,T,n,r,k,u,d): #Funcion para determinar el precio de la op
             lista_llaves.append(llave)
         for i in range(len(lcu_y_cd)):
             Nodos[lista_llaves[i]] = lcu_y_cd[i]
-        valor_del_call_americano = valor_presente1*(Propabilidad*lcu_y_cd[1] + uno_probabilidad*lcu_y_cd[2])
+        valor_del_call_americano = valor_presenteT*(Propabilidad*lcu_y_cd[1] + uno_probabilidad*lcu_y_cd[2])
         Nodos['A'] = valor_del_call_americano
         return valor_del_call_americano, Nodos
 
@@ -154,7 +156,7 @@ def mbinomial(s,opcion,T,n,r,k,u,d): #Funcion para determinar el precio de la op
             maxup = max(k-up,0)
             down = nodo_evaluar*d
             maxdown = max(k-down,0)
-            put = valor_presente1*(maxup*Propabilidad + maxdown*uno_probabilidad)
+            put = valor_presenteT*(maxup*Propabilidad + maxdown*uno_probabilidad)
             rendimiento_ejercer = max(k-nodo_evaluar,0)
             if rendimiento_ejercer > put:
                 lcu_y_cd[i] = rendimiento_ejercer
@@ -166,7 +168,7 @@ def mbinomial(s,opcion,T,n,r,k,u,d): #Funcion para determinar el precio de la op
             lista_llaves.append(llave)
         for i in range(len(lcu_y_cd)):
             Nodos[lista_llaves[i]] = lcu_y_cd[i]
-        valor_del_put_americano = valor_presente1*(Propabilidad*lcu_y_cd[1] + uno_probabilidad*lcu_y_cd[2])
+        valor_del_put_americano = valor_presenteT*(Propabilidad*lcu_y_cd[1] + uno_probabilidad*lcu_y_cd[2])
         Nodos['A'] = valor_del_put_americano
         return valor_del_put_americano, Nodos
 
@@ -226,6 +228,43 @@ def main():
     ---------------------------------------------------------------------------------------------------------------
     """)
     tabla_comparativa(s,T,n,r,k,u,d)
+    print('\n')
+    Paridad = input(('¿Quieres comprobar la paridad Put-Call entre algunas de las opciones. y/n'))
+    Paridad = Paridad.lower()
+    if Paridad == 'y':
+        OpCall = int(input("""
+        ¿Qué Call quieres usar? 
+
+        1) Americano
+        2) Europeo 
+        """))
+        OpPut = int(input("""
+        ¿Qué Put quieres usar? 
+
+        1) Americano
+        2) Europeo 
+        """))
+        if OpCall == 1:
+            c = mbinomial(s,3,T,n,r,k,u,d)
+            C = c[0]
+
+        else:
+            c = mbinomial(s,1,T,n,r,k,u,d)
+            C = c[0]
+        
+        if OpPut == 1:
+            p = mbinomial(s,4,T,n,r,k,u,d)
+            P = p[0]
+
+        else:
+            p = mbinomial(s,2,T,n,r,k,u,d)
+            P = p[0]
+            
+        t=T/12
+        paridad(C,P,k,r,s,t)
+    else:
+        print('El programa finalizó')
+
 
 if __name__ == '__main__':
     main()
