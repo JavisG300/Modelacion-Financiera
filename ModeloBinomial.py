@@ -5,7 +5,7 @@ from math import factorial
 from paridad_put_call import paridad #Función de paridad put call programada anteriormente
 
 def nodos(s,u,d,n):
-    abecedario = list(string.ascii_uppercase)  #Para hacer lista de nodos con letra
+    abecedario = list(string.ascii_uppercase)  #Lista de abecedario (25 letras)
     numeros = [numero+1 for numero in range(1,n**n)]
     dic_nodos = {}
     lista_nodos = [s]
