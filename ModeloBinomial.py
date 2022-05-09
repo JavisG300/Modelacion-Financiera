@@ -69,7 +69,7 @@ def mbinomial(s,opcion,T,n,r,k,u,d): #Funcion para determinar el precio de la op
     valor_presenteT = np.exp(-r*Dt)
 
     #Calculando el valor de la opción
-    if opcion == 1:
+    if opcion == 1:   #Call Europeo
         cuenta = 0
         Nodos = nodos(s,u,d,n)
         lista_de_nodos = []
@@ -87,7 +87,7 @@ def mbinomial(s,opcion,T,n,r,k,u,d): #Funcion para determinar el precio de la op
         valor_del_call = valor_presente1 * cuenta
         return valor_del_call, Nodos
 
-    elif opcion == 2:
+    elif opcion == 2:  #Put Europeo
         cuenta = 0
         Nodos = nodos(s,u,d,n)
         lista_de_nodos = []
@@ -105,7 +105,7 @@ def mbinomial(s,opcion,T,n,r,k,u,d): #Funcion para determinar el precio de la op
         valor_del_put = valor_presente1 * cuenta
         return valor_del_put, Nodos
 
-    elif opcion == 3:
+    elif opcion == 3: #Call Americano
         Nodos = nodos(s,u,d,n)
         lista_de_nodos = []
         lcu_y_cd = []
@@ -139,7 +139,7 @@ def mbinomial(s,opcion,T,n,r,k,u,d): #Funcion para determinar el precio de la op
         return valor_del_call_americano, Nodos
 
 
-    elif opcion == 4:
+    elif opcion == 4:    #Put Americano
         Nodos = nodos(s,u,d,n)
         lista_de_nodos = []
         lcu_y_cd = []
