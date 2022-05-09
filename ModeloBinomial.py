@@ -263,8 +263,10 @@ def main():
             
         t=T/12
         paridad(C,P,k,r,s,t)
+        print('https://github.com/JavisG300/Modelacion-Financiera/blob/master/ModeloBinomial.py')
     else:
         print('El programa finalizó')
+        print('https://github.com/JavisG300/Modelacion-Financiera/blob/master/ModeloBinomial.py')
 
 
 if __name__ == '__main__':
