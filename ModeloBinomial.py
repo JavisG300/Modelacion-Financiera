@@ -185,9 +185,12 @@ def mbinomial(s,opcion,T,n,r,k,u,d): #Funcion para determinar el precio de las o
         return valor_del_put_americano, Nodos, Nodos1
 
 def tabla_comparativa(s,T,n,r,k,u,d):
-    datos={'Opción':['Europeo', 'Europeo','Americano', 'Americano'], 'Precio/Nodos':[mbinomial(s,1,T,n,r,k,u,d),
-    mbinomial(s,2,T,n,r,k,u,d),mbinomial(s,3,T,n,r,k,u,d),mbinomial(s,4,T,n,r,k,u,d)]}
-    tabla_datos = DataFrame(datos, columns = ['Opción','Precio/Nodos'], 
+    uno = mbinomial(s,1,T,n,r,k,u,d)
+    dos = mbinomial(s,2,T,n,r,k,u,d)
+    tres = mbinomial(s,3,T,n,r,k,u,d)
+    cuatro = mbinomial(s,4,T,n,r,k,u,d)
+    datos={'Opción':['Europeo', 'Europeo','Americano', 'Americano'], 'Precio':[uno[0],dos[0],tres[0],cuatro[0]]}
+    tabla_datos = DataFrame(datos, columns = ['Opción','Precio'], 
     index=['Call','Put','Call','Put'])
     print('\n')
     print(tabla_datos.round(4))
@@ -235,7 +238,7 @@ def main():
     print('\n')
     print(f'El precio del {tipo} solicitado es:{l[0]} \n')
     print(f'Los nodos de la ocpión son: {l[1]} \n \n')
-    if opcion == 3 or 4:
+    if opcion >= 3:
         print(f'Los nodos modificados son {l[2]}')
     
     print("""
