@@ -5,7 +5,7 @@ from math import factorial
 from paridad_put_call import paridad #Función de paridad put call programada anteriormente
 
 def nodos(s,u,d,n):
-    numeros = [numero+1 for numero in range(1,n**n)]
+    numeros = [numero+1 for numero in range(1,n**2)]
     ramas = [numeros[rama] for rama in range(n)]
     longitud = sum(ramas)
     lista_nodos = [s]
@@ -55,7 +55,7 @@ def tabla(s,opcion,T,n,r,k,u,d):
     print('\n')
     print(tabla_datos.round(4))
 
-def mbinomial(s,opcion,T,n,r,k,u,d): #Funcion para determinar el precio de la opcion
+def mbinomial(s,opcion,T,n,r,k,u,d): #Funcion para determinar el precio de las opcion
     T = T/12
     Dt = T/n
     Propabilidad = (np.exp(r*Dt) - d)/(u - d)
@@ -101,6 +101,7 @@ def mbinomial(s,opcion,T,n,r,k,u,d): #Funcion para determinar el precio de la op
             lcu_y_cd.append(Nodos[i])
         lcu_y_cd = lcu_y_cd[::-1]
         lcu_y_cd_nuevo = lcu_y_cd.copy()
+
         for i in range(n): #Evaluamos los ultimos n valores desde el cero
             nodo_evaluar = lcu_y_cd_nuevo[i]
             up = nodo_evaluar*u
@@ -133,9 +134,9 @@ def mbinomial(s,opcion,T,n,r,k,u,d): #Funcion para determinar el precio de la op
             else:
                 lcu_y_cd_nuevo[indice-1] = call
             indice = indice -1 
-        lcu_y_cd_nuevo = lcu_y_cd_nuevo[::-1]
         valor_del_call_americano = valor_presenteT*(Propabilidad*lcu_y_cd_nuevo[1] + uno_probabilidad*lcu_y_cd_nuevo[2])
-        return valor_del_call_americano, Nodos
+        Nodos1 = lcu_y_cd_nuevo.copy()
+        return valor_del_call_americano, Nodos, Nodos1
 
 
     elif opcion == 4:    #Put Americano
@@ -179,9 +180,9 @@ def mbinomial(s,opcion,T,n,r,k,u,d): #Funcion para determinar el precio de la op
             else:
                 lcu_y_cd_nuevo[indice-1] = put
             indice = indice -1 
-        lcu_y_cd_nuevo = lcu_y_cd_nuevo[::-1]
         valor_del_put_americano = valor_presenteT*(Propabilidad*lcu_y_cd_nuevo[1] + uno_probabilidad*lcu_y_cd_nuevo[2])
-        return valor_del_put_americano, Nodos
+        Nodos1 = lcu_y_cd_nuevo.copy()
+        return valor_del_put_americano, Nodos, Nodos1
 
 def tabla_comparativa(s,T,n,r,k,u,d):
     datos={'Opción':['Europeo', 'Europeo','Americano', 'Americano'], 'Precio/Nodos':[mbinomial(s,1,T,n,r,k,u,d),
@@ -208,10 +209,10 @@ Escribe el número de la opción que será valuada
  """)) 
 print(f'---Su selección fue el inciso {opcion} ---\n')
 s      = float(input("Indica el precio incial del activo subyacente: "))
+k      = float(input("Indica el precio de ejercicio: "))
 T      = float(input("Indica el tiempo de vencimiento en meses: "))
 n      = int(input("Indica el número de periodos: "))
 r      = float(input("Indica la tasa de interés anualizada de forma decimal: "))
-k      = float(input("Indica el precio de ejercicio: "))
 u      = float(input("Indica el porcentaje/probabilidad de subida con la unidad: "))
 d      = float(input("Indica el porcentaje/probabilidad de bajada con la unidad: "))
 
@@ -234,6 +235,9 @@ def main():
     print('\n')
     print(f'El precio del {tipo} solicitado es:{l[0]} \n')
     print(f'Los nodos de la ocpión son: {l[1]} \n \n')
+    if opcion == 3 or 4:
+        print(f'Los nodos modificados son {l[2]}')
+    
     print("""
     ---------------------------------------------------------------------------------------------------------------
     || A continuación se muestra una tabla comparativa de la opción solicitada junto a los demás tipos de opción || 
