@@ -3,11 +3,7 @@ def paridad(c,p,k,r,S0,t):
     call = c + k*np.exp(-r*t)
     call = round(call,6)
     put  = p + S0 
-<<<<<<< HEAD
-    print("call:", call," Put: ",put)
-=======
     put  = round(put,6) 
->>>>>>> master
     estrategia(c,p,k,r,S0,t,put,call)
 
 def estrategia(c,p,k,r,S0,t,put,call):
