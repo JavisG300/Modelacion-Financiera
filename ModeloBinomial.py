@@ -124,7 +124,7 @@ def mbinomial(s,opcion,T,n,r,k,u,d): #Funcion para determinar el precio de la op
             maxdown = max(down-k,0)
             call = valor_presenteT*(maxup*Propabilidad + maxdown*uno_probabilidad)
             rendimiento_ejercer = max(nodo_evaluar-k,0)
-            if rendimiento_ejercer > call:
+            if rendimiento_ejercer >= call:
                 lcu_y_cd[i] = rendimiento_ejercer
             else:
                 lcu_y_cd[i] = call
@@ -143,6 +143,7 @@ def mbinomial(s,opcion,T,n,r,k,u,d): #Funcion para determinar el precio de la op
         Nodos = nodos(s,u,d,n)
         lista_de_nodos = []
         lcu_y_cd = []
+        lcu_y_cd_nuevo = []
         lista_llaves = []
         for value in Nodos.values():
             valor = value 
@@ -150,20 +151,23 @@ def mbinomial(s,opcion,T,n,r,k,u,d): #Funcion para determinar el precio de la op
         for i in range(len(lista_de_nodos)-(n+1)):
             lcu_y_cd.append(lista_de_nodos[i])
         lcu_y_cd = lcu_y_cd[::-1]
-        for i in range(len(lcu_y_cd)-1):
-            nodo_evaluar = lcu_y_cd[i]
+        lcu_y_cd_nuevo = lcu_y_cd
+        for i in range(n): #Evaluamos los ultimos n valores desde el cero
+            nodo_evaluar = lcu_y_cd_nuevo[i]
             up = nodo_evaluar*u
             maxup = max(k-up,0)
-            down = nodo_evaluar*d
+            down = nodo_evaluar*d                 
             maxdown = max(k-down,0)
             put = valor_presenteT*(maxup*Propabilidad + maxdown*uno_probabilidad)
             rendimiento_ejercer = max(k-nodo_evaluar,0)
-            if rendimiento_ejercer > put:
-                lcu_y_cd[i] = rendimiento_ejercer
+            if rendimiento_ejercer >= put:
+                lcu_y_cd_nuevo[i] = rendimiento_ejercer
             else:
-                lcu_y_cd[i] = put
-        lcu_y_cd = lcu_y_cd[::-1]
-        for value in Nodos.keys():
+                lcu_y_cd_nuevo[i] = put         #Hasta aquí solo han cambiado los penultimos 
+        #Vamos a comparar las listas lcy_y_lcd vs lcu_ylcd_nuevo
+        for i in range(len(lcu_y_cd)-(n)): #A la longitud de la lista de nodos recortada le restamos los n valores desde el cero evaluados antes
+            pass     
+        for value in Nodos.keys():        # Rehaciendo el diccionario de nodos
             llave = value 
             lista_llaves.append(llave)
         for i in range(len(lcu_y_cd)):
