@@ -123,20 +123,24 @@ def mbinomial(s,opcion,T,n,r,k,u,d): #Funcion para determinar el precio de las o
                 indice = lcu_y_cd_nuevo.index(j)
                 break
             i+=1
-            
+        contador = 0
+        N=n
         #Ahora empezamos a cambiar los elementos a partir de indice-1
         for i in range(len(lcu_y_cd)-(n)): #A la longitud de la lista de nodos recortada le restamos los n valores desde el cero evaluados antes
             nodo_evaluar =  lcu_y_cd_nuevo[indice-1]
-            call = valor_presenteT*(lcu_y_cd_nuevo[indice+(n-2)]*Propabilidad + lcu_y_cd_nuevo[indice+(n-1)]*uno_probabilidad)
-            rendimiento_ejercer = max(k-nodo_evaluar,0)
+            call = valor_presenteT*(lcu_y_cd_nuevo[indice+(N-2)]*Propabilidad + lcu_y_cd_nuevo[indice+(N-1)]*uno_probabilidad)
+            rendimiento_ejercer = max(nodo_evaluar-k,0)
             if rendimiento_ejercer >= call:
                 lcu_y_cd_nuevo[indice-1] = rendimiento_ejercer
             else:
                 lcu_y_cd_nuevo[indice-1] = call
             indice = indice -1 
+            contador = contador + 1
+            if contador == N-1:
+                N = N-1
+                contador = 0
         valor_del_call_americano = valor_presenteT*(Propabilidad*lcu_y_cd_nuevo[1] + uno_probabilidad*lcu_y_cd_nuevo[2])
-        Nodos1 = lcu_y_cd_nuevo.copy()
-        return valor_del_call_americano, Nodos, Nodos1
+        return valor_del_call_americano, Nodos
 
 
     elif opcion == 4:    #Put Americano
@@ -169,20 +173,25 @@ def mbinomial(s,opcion,T,n,r,k,u,d): #Funcion para determinar el precio de las o
                 indice = lcu_y_cd_nuevo.index(j)
                 break
             i+=1
-            
+        contador=0 
+        N=n   
         #Ahora empezamos a cambiar los elementos a partir de indice-1
         for i in range(len(lcu_y_cd)-(n)): #A la longitud de la lista de nodos recortada le restamos los n valores desde el cero evaluados antes
             nodo_evaluar =  lcu_y_cd_nuevo[indice-1]
-            put = valor_presenteT*(lcu_y_cd_nuevo[indice+(n-2)]*Propabilidad + lcu_y_cd_nuevo[indice+(n-1)]*uno_probabilidad)
+            put = valor_presenteT*(lcu_y_cd_nuevo[indice+(N-2)]*Propabilidad + lcu_y_cd_nuevo[indice+(N-1)]*uno_probabilidad)
             rendimiento_ejercer = max(k-nodo_evaluar,0)
             if rendimiento_ejercer >= put:
                 lcu_y_cd_nuevo[indice-1] = rendimiento_ejercer
             else:
                 lcu_y_cd_nuevo[indice-1] = put
             indice = indice -1 
+            contador = contador + 1
+            if contador == N-1:
+                N = N-1
+                contador = 0
+
         valor_del_put_americano = valor_presenteT*(Propabilidad*lcu_y_cd_nuevo[1] + uno_probabilidad*lcu_y_cd_nuevo[2])
-        Nodos1 = lcu_y_cd_nuevo.copy()
-        return valor_del_put_americano, Nodos, Nodos1
+        return valor_del_put_americano, Nodos
 
 def tabla_comparativa(s,T,n,r,k,u,d):
     uno = mbinomial(s,1,T,n,r,k,u,d)
