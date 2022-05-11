@@ -93,7 +93,7 @@ def mbinomial(s,opcion,T,n,r,k,u,d): #Funcion para determinar el precio de las o
         return valor_del_put, Nodos
 
     elif opcion == 3: #Call Americano
-        Nodos = nodos(s,u,d,n)
+        Nodos = nodos(s,u,d,n) #Lista de los nodos de subida y bajada
         lcu_y_cd = []
         lcu_y_cd_nuevo = []
 
@@ -102,7 +102,7 @@ def mbinomial(s,opcion,T,n,r,k,u,d): #Funcion para determinar el precio de las o
         lcu_y_cd = lcu_y_cd[::-1]
         lcu_y_cd_nuevo = lcu_y_cd.copy()
 
-        for i in range(n): #Evaluamos los ultimos n valores desde el cero
+        for i in range(n): #Evaluamos los ultimos n valores desde el cero es decir n+1
             nodo_evaluar = lcu_y_cd_nuevo[i]
             up = nodo_evaluar*u
             maxup = max(up-k,0)
