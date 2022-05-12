@@ -247,9 +247,6 @@ def main():
     print('\n')
     print(f'El precio del {tipo} solicitado es:{l[0]} \n')
     print(f'Los nodos de la ocpión son: {l[1]} \n \n')
-    if opcion >= 3:
-        print(f'Los nodos modificados son {l[2]}')
-    
     print("""
     ---------------------------------------------------------------------------------------------------------------
     || A continuación se muestra una tabla comparativa de la opción solicitada junto a los demás tipos de opción || 
