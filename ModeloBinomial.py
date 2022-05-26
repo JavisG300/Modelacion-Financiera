@@ -1,6 +1,5 @@
-import numpy as np           #Para exp
 from pandas import DataFrame #Para hacer una tabla con los datos
-from math import factorial
+from math import factorial,exp,sqrt
 from paridad_put_call import paridad #Función de paridad put call programada anteriormente
 
 def nodos(s,u,d,n):
@@ -54,10 +53,10 @@ def mbinomial(s,n,r,k,u,d,sigma,Dt,Probabilidad,uno_probabilidad): #Funcion para
         u = u
         d = d
     else:
-        u  = np.exp(sigma*np.sqrt(Dt))
+        u  = exp(sigma*sqrt(Dt))
         d  = 1/u
-    valor_presente1 = np.exp(-n*r*Dt)
-    valor_presenteT = np.exp(-r*Dt)
+    valor_presente1 = exp(-n*r*Dt)
+    valor_presenteT = exp(-r*Dt)
 
     #Calculando el valor de las opciones
 
@@ -204,12 +203,12 @@ elif modelo == 'B':
     n  = int(input("Indica el número de periodos: "))
     Dt = T/n
     sigma  = float(input("Indica la volatilidad de manera decimal (Ej. 0.25): "))
-    u  = np.exp(sigma*np.sqrt(Dt))
+    u  = exp(sigma*sqrt(Dt))
     d  = 1/u
 elif modelo == 'C':
     pass
 
-Probabilidad = (np.exp(r*Dt) - d)/(u - d)
+Probabilidad = (exp(r*Dt) - d)/(u - d)
 uno_probabilidad = 1 - Probabilidad
 
 def main():
