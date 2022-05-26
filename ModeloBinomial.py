@@ -50,8 +50,13 @@ def tabla(s,opcion,T,n,r,k,u,d,sigma,Dt,Probabilidad,uno_probabilidad):
     print('\n')
     print(tabla_datos.round(4))
 
-def mbinomial(s,n,r,k,u,d,Dt,Probabilidad,uno_probabilidad): #Funcion para determinar el precio de las opcion
-    
+def mbinomial(s,n,r,k,u,d,sigma,Dt,Probabilidad,uno_probabilidad): #Funcion para determinar el precio de las opcion
+    if sigma == 0:
+        u = u
+        d = d
+    else:
+        u  = np.exp(sigma*np.sqrt(Dt))
+        d  = 1/u
     valor_presente1 = np.exp(-n*r*Dt)
     valor_presenteT = np.exp(-r*Dt)
 
@@ -209,7 +214,7 @@ elif modelo == 'B':
     Dt = T/n
     sigma  = float(input("Indica la volatilidad de manera decimal (Ej. 0.25): "))
     u  = np.exp(sigma*np.sqrt(Dt))
-    d  = np.exp(-sigma*np.sqrt(Dt))
+    d  = 1/u
 elif modelo == 'C':
     pass
 
@@ -223,7 +228,7 @@ def main():
     ---------------------------------------""")
     tabla(s,opcion,T,n,r,k,u,d,sigma,Dt,Probabilidad,uno_probabilidad)
     nodos(s,u,d,n)
-    l = mbinomial(s,n,r,k,u,d,Dt,Probabilidad,uno_probabilidad)
+    l = mbinomial(s,n,r,k,u,d,sigma,Dt,Probabilidad,uno_probabilidad)
     if opcion == 1:
         tipo = 'Call Europeo'
         v = 0
