@@ -221,18 +221,18 @@ if modelo == 'A':
     u  = float(input("Indica el porcentaje/probabilidad de subida con la unidad (Ej. 1.05): "))
     d  = float(input("Indica el porcentaje/probabilidad de bajada con la unidad (Ej. 0.95): "))
     sigma  = 0
+    Probabilidad = (exp(r*Dt) - d)/(u - d)
+    uno_probabilidad = 1 - Probabilidad
 elif modelo == 'B':
     n  = int(input("Indica el número de periodos: "))
     Dt = T/n
     sigma  = float(input("Indica la volatilidad de manera decimal (Ej. 0.25): "))
     u  = exp(sigma*sqrt(Dt))
     d  = 1/u
+    Probabilidad = (exp(r*Dt) - d)/(u - d)
+    uno_probabilidad = 1 - Probabilidad
 elif modelo == 'C':
     sigma = float(input("Indica la volatilidad de manera decimal (Ej. 0.25): "))
-    
-
-Probabilidad = (exp(r*Dt) - d)/(u - d)
-uno_probabilidad = 1 - Probabilidad
 
 def main():
     if modelo == 'A' or modelo == 'B':
