@@ -174,16 +174,20 @@ def blancscholes(s,k,T,r,sigma,opcion):
     tabla_datos = DataFrame(datos, columns = ['Dato         ','   Valor ingresado   '], 
     index=['Tipo de opción','Precio incial del activo subyacente','Precio de ejercicio','Tiempo de vencimiento',
     'Tasa libre de riesgo','Volatilidad'])
+    print("""
+        ---------------------------------------
+        || Resumen de los datos introducidos ||
+        ---------------------------------------""")
     print(tabla_datos.round(4))
 
     d1 = (log(s/k,exp(1)) + (r + (sigma**2/2)) * T )/(sigma * sqrt(T))
     d2 = d1 - (sigma*sqrt(T))
     if opcion == 1:
         c = s * norm.cdf(d1) - k*exp(-r*T)*norm.cdf(d2)
-        print(f' El valor del {option} es {c}')
+        print(f' \n El valor del {option} es {c}')
     else:
         p = k*exp(-r*T)*norm.cdf(-d2) - s * norm.cdf(-d1) 
-        print(f' El valor del {option} es {p}')
+        print(f' \n El valor del {option} es {p}')
     
 print("""
 --------------------------------------------------------------------
