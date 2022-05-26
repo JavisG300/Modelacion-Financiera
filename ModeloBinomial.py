@@ -55,9 +55,11 @@ def mbinomial(s,T,n,r,k,u,d): #Funcion para determinar el precio de las opcion
     valor_presente1 = np.exp(-n*r*Dt)
     valor_presenteT = np.exp(-r*Dt)
 
-    #Calculando el valor de la opción
-    #Call Europeo
-    cuenta = 0
+    #Calculando el valor de las opciones
+
+    #Call y Put Europeo
+    cuenta_call = 0
+    cuenta_put = 0
     Nodos = nodos(s,u,d,n)
     Nodos1 = Nodos.copy()
     Nodos1 = Nodos1[::-1]
@@ -66,26 +68,18 @@ def mbinomial(s,T,n,r,k,u,d): #Funcion para determinar el precio de las opcion
         lcu_y_cd.append(Nodos1[i])
     lcu_y_cd = lcu_y_cd[::-1]
     for i in range(n+1):
+        #Call Europeo
         cu = max(lcu_y_cd[i]-k,0)
+        #Put Europeo
+        pu = max(k-lcu_y_cd[i],0)
         combinacion = factorial(n)/((factorial(i))*(factorial(n-i)))
-        cuenta = cuenta + combinacion*(Propabilidad**(n-i))*((uno_probabilidad)**i)*cu 
-    valor_del_call = valor_presente1 * cuenta
+        cuenta_call = cuenta_call + combinacion*(Propabilidad**(n-i))*((uno_probabilidad)**i)*cu
+        cuenta_put = cuenta_put + combinacion*(Propabilidad**(n-i))*((uno_probabilidad)**i)*pu 
+    valor_del_call = valor_presente1 * cuenta_put
+    valor_del_put = valor_presente1 * cuenta_call
     
 
-    #Put Europeo
-    cuenta = 0
-    Nodos = nodos(s,u,d,n)
-    Nodos1 = Nodos.copy()
-    Nodos1 = Nodos1[::-1]
-    lcu_y_cd = []     
-    for i in range(n+1):
-        lcu_y_cd.append(Nodos1[i])
-    lcu_y_cd = lcu_y_cd[::-1]
-    for i in range(n+1):
-        cu = max(k-lcu_y_cd[i],0)
-        combinacion = factorial(n)/((factorial(i))*(factorial(n-i)))
-        cuenta = cuenta + combinacion*(Propabilidad**(n-i))*((uno_probabilidad)**i)*cu 
-    valor_del_put = valor_presente1 * cuenta
+    
         
 
     #Call Americano
