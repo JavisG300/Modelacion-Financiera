@@ -1,4 +1,3 @@
-from operator import index
 import numpy as np           #Para exp
 from pandas import DataFrame #Para hacer una tabla con los datos
 from math import factorial
@@ -55,8 +54,8 @@ def mbinomial(s,n,r,k,u,d,sigma,Dt,Probabilidad,uno_probabilidad): #Funcion para
         u = u
         d = d
     else:
-        u  = round(np.exp(sigma*np.sqrt(Dt)),5)
-        d  = round(1/u,5)
+        u  = np.exp(sigma*np.sqrt(Dt))
+        d  = 1/u
     valor_presente1 = np.exp(-n*r*Dt)
     valor_presenteT = np.exp(-r*Dt)
 
@@ -164,14 +163,6 @@ def mbinomial(s,n,r,k,u,d,sigma,Dt,Probabilidad,uno_probabilidad): #Funcion para
     valor_del_put_americano = valor_presenteT*(Probabilidad*lcu_y_cd_put[1] + uno_probabilidad*lcu_y_cd_put[2])
 
     return valor_del_call, valor_del_put, valor_del_call_americano, valor_del_put_americano
-
-def tabla_comparativa():
-    uno = mbinomial(s,n,r,k,u,d,sigma,Dt,Probabilidad,uno_probabilidad)
-    datos={'Opción':['Europeo', 'Europeo','Americano', 'Americano'], 'Precio':[uno[0],uno[1],uno[2],uno[3]]}
-    tabla_datos = DataFrame(datos, columns = ['Opción','Precio'], 
-    index=['Call','Put','Call','Put'])
-    print('\n')
-    print(tabla_datos.round(4))
 
 print("""
 --------------------------------------------------------------------
