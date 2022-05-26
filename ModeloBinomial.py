@@ -183,12 +183,25 @@ Escribe el número de la opción que será valuada
 3) Call Americano
 4) Put Americano 
  """)) 
+modelo = input("""
+¿Qué modelo quieres utilizar para valuar la opción?
+A) Binomial
+B) Binomial con volatilidad
+C) Black & Scholes - Merton
+""")
 print(f'---Su selección fue el inciso {opcion} ---\n')
 s      = float(input("Indica el precio incial del activo subyacente: "))
 k      = float(input("Indica el precio de ejercicio: "))
 T      = float(input("Indica el tiempo de vencimiento en meses: "))
 n      = int(input("Indica el número de periodos: "))
-r      = float(input("Indica la tasa de interés anualizada de forma decimal: "))
+r      = float(input("Indica la tasa de interés anualizada de forma decimal (Ej. 0.05): "))
+if modelo == 'A':
+    u  = float(input("Indica el porcentaje/probabilidad de subida con la unidad (Ej. 1.05): "))
+    d  = float(input("Indica el porcentaje/probabilidad de bajada con la unidad (Ej. 0.95): "))
+elif modelo == 'B':
+    v  = float(input("Indica la volatilidad de manera decimal (Ej. 0.25)"))
+elif modelo == 'C':
+    pass
 u      = float(input("Indica el porcentaje/probabilidad de subida con la unidad: "))
 d      = float(input("Indica el porcentaje/probabilidad de bajada con la unidad: "))
 
