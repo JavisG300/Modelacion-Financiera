@@ -9,27 +9,22 @@ def nodos(s,u,d,n):
     ramas = [numeros[rama] for rama in range(n)]
     longitud = sum(ramas)
     lista_nodos = [s]
-    j = 0
     i = 0
     while len(lista_nodos) <= longitud:
         up = s*u
         lista_nodos.append(up)
         integrantes = len(lista_nodos)
         dif = abs(lista_nodos[(integrantes-1)] - lista_nodos[(integrantes-2)])
-        if dif <= 0.01:
+        if dif <= 0.1:
            lista_nodos.pop()
-                
-        else:
-            lista_nodos
 
         down = s*d
         lista_nodos.append(down)
         integrantes = len(lista_nodos)
         diff = abs(lista_nodos[(integrantes-1)] - lista_nodos[(integrantes-2)])  
-        if diff <= 0.01:
+        if diff <= 0.1:
             lista_nodos.pop()
-        else:
-            lista_nodos = lista_nodos
+
         s = lista_nodos[i+1]
         i+=1
     return lista_nodos
@@ -67,9 +62,11 @@ def mbinomial(s,opcion,T,n,r,k,u,d): #Funcion para determinar el precio de las o
     if opcion == 1:   #Call Europeo
         cuenta = 0
         Nodos = nodos(s,u,d,n)
+        Nodos1 = Nodos.copy()
+        Nodos1 = Nodos1[::-1]
         lcu_y_cd = []
-        for i in range(len(Nodos)-1,len(Nodos)-(n+2),-1):
-            lcu_y_cd.append(Nodos[i])
+        for i in range(n+1):
+            lcu_y_cd.append(Nodos1[i])
         lcu_y_cd = lcu_y_cd[::-1]
         for i in range(n+1):
             cu = max(lcu_y_cd[i]-k,0)
@@ -246,7 +243,7 @@ def main():
         tipo = 'Put Americano'
     print('\n')
     print(f'El precio del {tipo} solicitado es:{l[0]} \n')
-    print(f'Los nodos de la ocpión son: {l[1]} \n \n')
+    print(f'Los nodos de la opción son: {l[1]} \n \n')
     print("""
     ---------------------------------------------------------------------------------------------------------------
     || A continuación se muestra una tabla comparativa de la opción solicitada junto a los demás tipos de opción || 
