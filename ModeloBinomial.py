@@ -1,5 +1,7 @@
+from ast import Pass
 from pandas import DataFrame #Para hacer una tabla con los datos
-from math import factorial,exp,sqrt
+from math import factorial,exp,sqrt,log
+from scipy.stats import norm
 
 def nodos(s,u,d,n):
     numeros = [numero+1 for numero in range(1,n+1)]
@@ -162,6 +164,27 @@ def mbinomial(s,n,r,k,u,d,sigma,Dt,Probabilidad,uno_probabilidad): #Funcion para
 
     return valor_del_call, valor_del_put, valor_del_call_americano, valor_del_put_americano
 
+def blancscholes(s,k,T,r,sigma,opcion):
+    if opcion == 1:
+        option = 'Call Europeo'
+    elif opcion ==2:
+        option =  'Put Europeo'
+    datos={'Dato         ':['Opción','S0','k','T','r','sigma'],
+    '   Valor ingresado   ':[option,s,k,T,r,sigma]}
+    tabla_datos = DataFrame(datos, columns = ['Dato         ','   Valor ingresado   '], 
+    index=['Tipo de opción','Precio incial del activo subyacente','Precio de ejercicio','Tiempo de vencimiento',
+    'Tasa libre de riesgo','Volatilidad'])
+    print(tabla_datos.round(4))
+
+    d1 = (log(s/k,exp(1)) + (r + (sigma**2/2)) * T )/(sigma * sqrt(T))
+    d2 = d1 - (sigma*sqrt(T))
+    if opcion == 1:
+        c = s * norm.cdf(d1) - k*exp(-r*T)*norm.cdf(d2)
+        print(f' El valor del Call es {c}')
+    else:
+        p = k*exp(-r*T)*norm.cdf(-d2) - s * norm.cdf(-d1) 
+        print(f' El valor del Call es {p}')
+    
 print("""
 --------------------------------------------------------------------
 || Bienvenido a la calculadora de opciones con el modelo binomial || 
@@ -170,16 +193,6 @@ print("""
 --------------------------------------------------------------------
 
 """)
-opcion = float(input("""
-Escribe el número de la opción que será valuada
-1) Call Europeo
-2) Put Europeo
-3) Call Americano
-4) Put Americano 
- """)) 
-
-print(f'---Su selección fue el inciso {opcion} ---\n')
-
 modelo = input("""
 ¿Qué modelo quieres utilizar para valuar la opción? 
 A) Binomial
@@ -187,6 +200,16 @@ B) Binomial con volatilidad
 C) Black & Scholes - Merton
 """)
 modelo = modelo.upper()
+
+opcion = float(input("""
+Escribe el número de la opción que será valuada
+1) Call Europeo
+2) Put Europeo
+3) Call Americano
+4) Put Americano 
+ """)) 
+print(f'---Su selección fue el inciso {opcion} ---\n')
+
 s      = float(input("Indica el precio incial del activo subyacente: "))
 k      = float(input("Indica el precio de ejercicio: "))
 T      = float(input("Indica el tiempo de vencimiento en meses: "))
@@ -205,44 +228,48 @@ elif modelo == 'B':
     u  = exp(sigma*sqrt(Dt))
     d  = 1/u
 elif modelo == 'C':
-    pass
+    sigma = float(input("Indica la volatilidad de manera decimal (Ej. 0.25): "))
+    
 
 Probabilidad = (exp(r*Dt) - d)/(u - d)
 uno_probabilidad = 1 - Probabilidad
 
 def main():
-    print("""
-    ---------------------------------------
-    || Resumen de los datos introducidos ||
-    ---------------------------------------""")
-    tabla(s,opcion,T,n,r,k,u,d,sigma,Dt,Probabilidad,uno_probabilidad)
-    l = mbinomial(s,n,r,k,u,d,sigma,Dt,Probabilidad,uno_probabilidad)
-    if opcion == 1:
-        tipo = 'Call Europeo'
-        v = 0
-    elif opcion == 2:
-        tipo = 'Put Europeo'
-        v = 1
-    elif opcion ==3:
-        tipo = 'Call Americano'
-        v = 2
-    elif opcion ==4:
-        tipo = 'Put Americano'
-        v = 3
-    print('\n')
-    print(f'El precio del {tipo} solicitado es:{l[v]} \n')
-    print("""
-    ---------------------------------------------------------------------------------------------------------------
-    || A continuación se muestra una tabla comparativa de la opción solicitada junto a los demás tipos de opción || 
-    ---------------------------------------------------------------------------------------------------------------
-    """)
-    datos={'Opción':['Europeo', 'Europeo','Americano', 'Americano'], 'Precio':[l[0],l[1],l[2],l[3]]}
-    tabla_datos = DataFrame(datos, columns = ['Opción','Precio'], 
-    index=['Call','Put','Call','Put'])
-    print('\n')
-    print(tabla_datos.round(4))
-    print('\n')
-    print('\n Si deseas colaborar https://github.com/JavisG300/Modelacion-Financiera/blob/master/ModeloBinomial.py')
+    if modelo == 'A' or modelo == 'B':
+        print("""
+        ---------------------------------------
+        || Resumen de los datos introducidos ||
+        ---------------------------------------""")
+        tabla(s,opcion,T,n,r,k,u,d,sigma,Dt,Probabilidad,uno_probabilidad)
+        l = mbinomial(s,n,r,k,u,d,sigma,Dt,Probabilidad,uno_probabilidad)
+        if opcion == 1:
+            tipo = 'Call Europeo'
+            v = 0
+        elif opcion == 2:
+            tipo = 'Put Europeo'
+            v = 1
+        elif opcion ==3:
+            tipo = 'Call Americano'
+            v = 2
+        elif opcion ==4:
+            tipo = 'Put Americano'
+            v = 3
+        print('\n')
+        print(f'El precio del {tipo} solicitado es:{l[v]} \n')
+        print("""
+        ---------------------------------------------------------------------------------------------------------------
+        || A continuación se muestra una tabla comparativa de la opción solicitada junto a los demás tipos de opción || 
+        ---------------------------------------------------------------------------------------------------------------
+        """)
+        datos={'Opción':['Europeo', 'Europeo','Americano', 'Americano'], 'Precio':[l[0],l[1],l[2],l[3]]}
+        tabla_datos = DataFrame(datos, columns = ['Opción','Precio'], 
+        index=['Call','Put','Call','Put'])
+        print('\n')
+        print(tabla_datos.round(4))
+        print('\n')
+        print('\n Si deseas colaborar https://github.com/JavisG300/Modelacion-Financiera/blob/master/ModeloBinomial.py')
+    else:
+        blancscholes(s,k,T,r,sigma,opcion)
 
 
 if __name__ == '__main__':
