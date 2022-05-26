@@ -75,8 +75,8 @@ def mbinomial(s,T,n,r,k,u,d): #Funcion para determinar el precio de las opcion
         combinacion = factorial(n)/((factorial(i))*(factorial(n-i)))
         cuenta_call = cuenta_call + combinacion*(Propabilidad**(n-i))*((uno_probabilidad)**i)*cu
         cuenta_put = cuenta_put + combinacion*(Propabilidad**(n-i))*((uno_probabilidad)**i)*pu 
-    valor_del_call = valor_presente1 * cuenta_put
-    valor_del_put = valor_presente1 * cuenta_call
+    valor_del_call = valor_presente1 * cuenta_call
+    valor_del_put = valor_presente1 * cuenta_put
 
 
     #Call y Put Americano
