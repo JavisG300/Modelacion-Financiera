@@ -55,8 +55,8 @@ def mbinomial(s,n,r,k,u,d,sigma,Dt,Probabilidad,uno_probabilidad): #Funcion para
         u = u
         d = d
     else:
-        u  = np.exp(sigma*np.sqrt(Dt))
-        d  = 1/u
+        u  = round(np.exp(sigma*np.sqrt(Dt)),5)
+        d  = round(1/u,5)
     valor_presente1 = np.exp(-n*r*Dt)
     valor_presenteT = np.exp(-r*Dt)
 
