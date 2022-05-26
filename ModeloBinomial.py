@@ -248,7 +248,11 @@ def main():
     || A continuación se muestra una tabla comparativa de la opción solicitada junto a los demás tipos de opción || 
     ---------------------------------------------------------------------------------------------------------------
     """)
-    tabla_comparativa()
+    datos={'Opción':['Europeo', 'Europeo','Americano', 'Americano'], 'Precio':[l[0],l[1],l[2],l[3]]}
+    tabla_datos = DataFrame(datos, columns = ['Opción','Precio'], 
+    index=['Call','Put','Call','Put'])
+    print('\n')
+    print(tabla_datos.round(4))
     print('\n')
     Paridad = input(('¿Quieres comprobar la paridad Put-Call entre algunas de las opciones. y/n: '))
     Paridad = Paridad.lower()
