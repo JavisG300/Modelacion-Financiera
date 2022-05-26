@@ -1,6 +1,5 @@
 from pandas import DataFrame #Para hacer una tabla con los datos
 from math import factorial,exp,sqrt
-from paridad_put_call import paridad #Función de paridad put call programada anteriormente
 
 def nodos(s,u,d,n):
     numeros = [numero+1 for numero in range(1,n+1)]
@@ -53,8 +52,8 @@ def mbinomial(s,n,r,k,u,d,sigma,Dt,Probabilidad,uno_probabilidad): #Funcion para
         u = u
         d = d
     else:
-        u  = exp(sigma*sqrt(Dt))
-        d  = 1/u
+        u  = round(exp(sigma*sqrt(Dt)),10)
+        d  = round(1/u,10)
     valor_presente1 = exp(-n*r*Dt)
     valor_presenteT = exp(-r*Dt)
 
@@ -217,7 +216,6 @@ def main():
     || Resumen de los datos introducidos ||
     ---------------------------------------""")
     tabla(s,opcion,T,n,r,k,u,d,sigma,Dt,Probabilidad,uno_probabilidad)
-    nodos(s,u,d,n)
     l = mbinomial(s,n,r,k,u,d,sigma,Dt,Probabilidad,uno_probabilidad)
     if opcion == 1:
         tipo = 'Call Europeo'
@@ -244,41 +242,7 @@ def main():
     print('\n')
     print(tabla_datos.round(4))
     print('\n')
-    Paridad = input(('¿Quieres comprobar la paridad Put-Call entre algunas de las opciones. y/n: '))
-    Paridad = Paridad.lower()
-    if Paridad == 'y':
-        OpCall = int(input("""
-        ¿Qué Call quieres usar? 
-
-        1) Americano
-        2) Europeo 
-        """))
-        print(f'---Su selección fue el inciso {OpCall} ---\n')
-        OpPut = int(input("""
-        ¿Qué Put quieres usar? 
-
-        1) Americano
-        2) Europeo 
-        """))
-        print(f'---Su selección fue el inciso {OpPut} ---\n')
-        if OpCall == 1:
-            c = l[2]
-
-        else:
-            c = l[0]
-        
-        if OpPut == 1:
-            p = l[3]
-
-        else:
-            p = l[1]
-            
-        t=T/12
-        paridad(c,p,k,r,s,t)
-        print('\n Si deseas colaborar https://github.com/JavisG300/Modelacion-Financiera/blob/master/ModeloBinomial.py')
-    else:
-        print('El programa finalizó')
-        print('\n Si deseas colaborar https://github.com/JavisG300/Modelacion-Financiera/blob/master/ModeloBinomial.py')
+    print('\n Si deseas colaborar https://github.com/JavisG300/Modelacion-Financiera/blob/master/ModeloBinomial.py')
 
 
 if __name__ == '__main__':
