@@ -104,7 +104,7 @@ def mbinomial(s,T,n,r,k,u,d): #Funcion para determinar el precio de las opcion
         put = valor_presenteT*(maxup_put*Propabilidad + maxdown_put*uno_probabilidad)
         rendimiento_ejercer_call = max(nodo_evaluar-k,0)
         rendimiento_ejercer_put = max(k-nodo_evaluar,0)
-        
+
         if rendimiento_ejercer_call >= call:
             lcu_y_cd_call[i] = rendimiento_ejercer_call
         else:
