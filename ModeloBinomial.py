@@ -77,56 +77,6 @@ def mbinomial(s,T,n,r,k,u,d): #Funcion para determinar el precio de las opcion
         cuenta_put = cuenta_put + combinacion*(Propabilidad**(n-i))*((uno_probabilidad)**i)*pu 
     valor_del_call = valor_presente1 * cuenta_put
     valor_del_put = valor_presente1 * cuenta_call
-        
-
-    #Call y Put Americano
-    lcu_y_cd = []
-    lcu_y_cd_nuevo = []
-
-    for i in range(len(Nodos)-(n+1)):
-        lcu_y_cd.append(Nodos[i])
-    lcu_y_cd = lcu_y_cd[::-1]
-    lcu_y_cd_nuevo = lcu_y_cd.copy()
-
-    for i in range(n): #Evaluamos los ultimos n valores desde el cero es decir n+1
-        nodo_evaluar = lcu_y_cd_nuevo[i]
-        up = nodo_evaluar*u
-        maxup = max(up-k,0)
-        down = nodo_evaluar*d                 
-        maxdown = max(down-k,0)
-        call = valor_presenteT*(maxup*Propabilidad + maxdown*uno_probabilidad)
-        rendimiento_ejercer = max(nodo_evaluar-k,0)
-        if rendimiento_ejercer >= call:
-            lcu_y_cd_nuevo[i] = rendimiento_ejercer
-        else:
-            lcu_y_cd_nuevo[i] = call         #Hasta aquí solo han cambiado los penultimos 
-        #Vamos a comparar las listas lcy_y_lcd vs lcu_ylcd_nuevo para esto se necesitan en orden Ascendente
-    lcu_y_cd = lcu_y_cd[::-1]
-    lcu_y_cd_nuevo = lcu_y_cd_nuevo[::-1]
-    i=0
-    for j in lcu_y_cd_nuevo:
-        if j != lcu_y_cd[i]:
-            indice = lcu_y_cd_nuevo.index(j)
-            break
-        i+=1
-    contador = 0
-    N=n
-        #Ahora empezamos a cambiar los elementos a partir de indice-1
-    for i in range(len(lcu_y_cd)-(n)): #A la longitud de la lista de nodos recortada le restamos los n valores desde el cero evaluados antes
-        nodo_evaluar =  lcu_y_cd_nuevo[indice-1]
-        call = valor_presenteT*(lcu_y_cd_nuevo[indice+(N-2)]*Propabilidad + lcu_y_cd_nuevo[indice+(N-1)]*uno_probabilidad)
-        rendimiento_ejercer = max(nodo_evaluar-k,0)
-        if rendimiento_ejercer >= call:
-            lcu_y_cd_nuevo[indice-1] = rendimiento_ejercer
-        else:
-            lcu_y_cd_nuevo[indice-1] = call
-        indice = indice -1 
-        contador = contador + 1
-        if contador == N-1:
-            N = N-1
-            contador = 0
-    valor_del_call_americano = valor_presenteT*(Propabilidad*lcu_y_cd_nuevo[1] + uno_probabilidad*lcu_y_cd_nuevo[2])
-        
 
 
     #Call y Put Americano
@@ -160,21 +110,22 @@ def mbinomial(s,T,n,r,k,u,d): #Funcion para determinar el precio de las opcion
             lcu_y_cd_put[i] = rendimiento_ejercer_put
         else:
             lcu_y_cd_call[i] = put         #Hasta aquí solo han cambiado los penultimos del put
-        #Vamos a comparar las listas lcy_y_lcd vs lcu_ylcd_call y la del put para esto se necesitan en orden Ascendente
+
+#Vamos a comparar las listas lcy_y_lcd vs lcu_ylcd_call y la del put para esto se necesitan en orden Ascendente
     lcu_y_cd = lcu_y_cd[::-1]
     lcu_y_cd_call = lcu_y_cd_call[::-1]
     lcu_y_cd_put = lcu_y_cd_put[::-1]
-    i=0
+    i,h=0,0
     for j in lcu_y_cd_call:
         if j != lcu_y_cd[i]:
             indice_call = lcu_y_cd_call.index(j)
             break
         i+=1
     for j in lcu_y_cd_put:
-        if j != lcu_y_cd[i]:
+        if j != lcu_y_cd[h]:
             indice_put = lcu_y_cd_put.index(j)
             break
-        i+=1
+        h+=1
     contador=0 
     N=n   
         #Ahora empezamos a cambiar los elementos a partir de indice-1
@@ -201,15 +152,12 @@ def mbinomial(s,T,n,r,k,u,d): #Funcion para determinar el precio de las opcion
             contador = 0
     valor_del_call_americano = valor_presenteT*(Propabilidad*lcu_y_cd_call[1] + uno_probabilidad*lcu_y_cd_call[2])
     valor_del_put_americano = valor_presenteT*(Propabilidad*lcu_y_cd_put[1] + uno_probabilidad*lcu_y_cd_put[2])
-    
+
     return valor_del_call, valor_del_put, valor_del_call_americano, valor_del_put_americano
 
 def tabla_comparativa(s,T,n,r,k,u,d):
-    uno = mbinomial(s,1,T,n,r,k,u,d)
-    dos = mbinomial(s,2,T,n,r,k,u,d)
-    tres = mbinomial(s,3,T,n,r,k,u,d)
-    cuatro = mbinomial(s,4,T,n,r,k,u,d)
-    datos={'Opción':['Europeo', 'Europeo','Americano', 'Americano'], 'Precio':[uno,dos,tres,cuatro]}
+    uno = mbinomial(s,T,n,r,k,u,d)
+    datos={'Opción':['Europeo', 'Europeo','Americano', 'Americano'], 'Precio':[uno[0],uno[1],uno[2],uno[3]]}
     tabla_datos = DataFrame(datos, columns = ['Opción','Precio'], 
     index=['Call','Put','Call','Put'])
     print('\n')
@@ -246,17 +194,21 @@ def main():
     ---------------------------------------""")
     tabla(s,opcion,T,n,r,k,u,d)
     nodos(s,u,d,n)
-    l = mbinomial(s,opcion,T,n,r,k,u,d)
+    l = mbinomial(s,T,n,r,k,u,d)
     if opcion == 1:
         tipo = 'Call Europeo'
+        v = 0
     elif opcion == 2:
         tipo = 'Put Europeo'
+        v = 1
     elif opcion ==3:
         tipo = 'Call Americano'
+        v = 2
     elif opcion ==4:
         tipo = 'Put Americano'
+        v = 3
     print('\n')
-    print(f'El precio del {tipo} solicitado es:{l} \n')
+    print(f'El precio del {tipo} solicitado es:{l[v]} \n')
     print("""
     ---------------------------------------------------------------------------------------------------------------
     || A continuación se muestra una tabla comparativa de la opción solicitada junto a los demás tipos de opción || 
@@ -282,16 +234,16 @@ def main():
         """))
         print(f'---Su selección fue el inciso {OpPut} ---\n')
         if OpCall == 1:
-            c = mbinomial(s,3,T,n,r,k,u,d)
+            c = l[2]
 
         else:
-            c = mbinomial(s,1,T,n,r,k,u,d)
+            c = l[0]
         
         if OpPut == 1:
-            p = mbinomial(s,4,T,n,r,k,u,d)
+            p = l[3]
 
         else:
-            p = mbinomial(s,2,T,n,r,k,u,d)
+            p = l[1]
             
         t=T/12
         paridad(c,p,k,r,s,t)
