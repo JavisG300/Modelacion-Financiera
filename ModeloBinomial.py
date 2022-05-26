@@ -5,26 +5,23 @@ from math import factorial
 from paridad_put_call import paridad #Función de paridad put call programada anteriormente
 
 def nodos(s,u,d,n):
-    numeros = [numero+1 for numero in range(1,n**2)]
-    ramas = [numeros[rama] for rama in range(n)]
-    longitud = sum(ramas)
+    numeros = [numero+1 for numero in range(1,n+1)]
+    l=[0]
+    for i in range(1,n+1):
+        numeronuevo = l[i-1]+i
+        l.append(numeronuevo)
+    longitud = sum(numeros)
     lista_nodos = [s]
     i = 0
     while len(lista_nodos) <= longitud:
-        up = s*u
-        lista_nodos.append(up)
-        integrantes = len(lista_nodos)
-        dif = abs(lista_nodos[(integrantes-1)] - lista_nodos[(integrantes-2)])
-        if dif <= 0.1:
-           lista_nodos.pop()
-
-        down = s*d
-        lista_nodos.append(down)
-        integrantes = len(lista_nodos)
-        diff = abs(lista_nodos[(integrantes-1)] - lista_nodos[(integrantes-2)])  
-        if diff <= 0.1:
-            lista_nodos.pop()
-
+        if i == 0 or lista_nodos.index(s) in l:
+            up = s*u
+            lista_nodos.append(up)
+            down = s*d
+            lista_nodos.append(down)
+        else:
+            down = s*d
+            lista_nodos.append(down)
         s = lista_nodos[i+1]
         i+=1
     return lista_nodos
@@ -73,21 +70,23 @@ def mbinomial(s,opcion,T,n,r,k,u,d): #Funcion para determinar el precio de las o
             combinacion = factorial(n)/((factorial(i))*(factorial(n-i)))
             cuenta = cuenta + combinacion*(Propabilidad**(n-i))*((uno_probabilidad)**i)*cu 
         valor_del_call = valor_presente1 * cuenta
-        return valor_del_call, Nodos
+    
 
     elif opcion == 2:  #Put Europeo
         cuenta = 0
         Nodos = nodos(s,u,d,n)
+        Nodos1 = Nodos.copy()
+        Nodos1 = Nodos1[::-1]
         lcu_y_cd = []     
-        for i in range(len(Nodos)-1,len(Nodos)-(n+2),-1):
-            lcu_y_cd.append(Nodos[i])
+        for i in range(n+1):
+            lcu_y_cd.append(Nodos1[i])
         lcu_y_cd = lcu_y_cd[::-1]
         for i in range(n+1):
             cu = max(k-lcu_y_cd[i],0)
             combinacion = factorial(n)/((factorial(i))*(factorial(n-i)))
             cuenta = cuenta + combinacion*(Propabilidad**(n-i))*((uno_probabilidad)**i)*cu 
         valor_del_put = valor_presente1 * cuenta
-        return valor_del_put, Nodos
+        
 
     elif opcion == 3: #Call Americano
         Nodos = nodos(s,u,d,n) #Lista de los nodos de subida y bajada
@@ -137,7 +136,7 @@ def mbinomial(s,opcion,T,n,r,k,u,d): #Funcion para determinar el precio de las o
                 N = N-1
                 contador = 0
         valor_del_call_americano = valor_presenteT*(Propabilidad*lcu_y_cd_nuevo[1] + uno_probabilidad*lcu_y_cd_nuevo[2])
-        return valor_del_call_americano, Nodos
+        
 
 
     elif opcion == 4:    #Put Americano
@@ -188,14 +187,14 @@ def mbinomial(s,opcion,T,n,r,k,u,d): #Funcion para determinar el precio de las o
                 contador = 0
 
         valor_del_put_americano = valor_presenteT*(Propabilidad*lcu_y_cd_nuevo[1] + uno_probabilidad*lcu_y_cd_nuevo[2])
-        return valor_del_put_americano, Nodos
+    return valor_del_call, valor_del_put, valor_del_call_americano, valor_del_put_americano
 
 def tabla_comparativa(s,T,n,r,k,u,d):
     uno = mbinomial(s,1,T,n,r,k,u,d)
     dos = mbinomial(s,2,T,n,r,k,u,d)
     tres = mbinomial(s,3,T,n,r,k,u,d)
     cuatro = mbinomial(s,4,T,n,r,k,u,d)
-    datos={'Opción':['Europeo', 'Europeo','Americano', 'Americano'], 'Precio':[uno[0],dos[0],tres[0],cuatro[0]]}
+    datos={'Opción':['Europeo', 'Europeo','Americano', 'Americano'], 'Precio':[uno,dos,tres,cuatro]}
     tabla_datos = DataFrame(datos, columns = ['Opción','Precio'], 
     index=['Call','Put','Call','Put'])
     print('\n')
@@ -242,8 +241,7 @@ def main():
     elif opcion ==4:
         tipo = 'Put Americano'
     print('\n')
-    print(f'El precio del {tipo} solicitado es:{l[0]} \n')
-    print(f'Los nodos de la opción son: {l[1]} \n \n')
+    print(f'El precio del {tipo} solicitado es:{l} \n')
     print("""
     ---------------------------------------------------------------------------------------------------------------
     || A continuación se muestra una tabla comparativa de la opción solicitada junto a los demás tipos de opción || 
@@ -270,22 +268,18 @@ def main():
         print(f'---Su selección fue el inciso {OpPut} ---\n')
         if OpCall == 1:
             c = mbinomial(s,3,T,n,r,k,u,d)
-            C = c[0]
 
         else:
             c = mbinomial(s,1,T,n,r,k,u,d)
-            C = c[0]
         
         if OpPut == 1:
             p = mbinomial(s,4,T,n,r,k,u,d)
-            P = p[0]
 
         else:
             p = mbinomial(s,2,T,n,r,k,u,d)
-            P = p[0]
             
         t=T/12
-        paridad(C,P,k,r,s,t)
+        paridad(c,p,k,r,s,t)
         print('\n https://github.com/JavisG300/Modelacion-Financiera/blob/master/ModeloBinomial.py')
     else:
         print('El programa finalizó')

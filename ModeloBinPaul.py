@@ -124,4 +124,4 @@ precios = {'Tipo de Opción':['Call', 'Put','Call','Put'], 'Clase':['europeo','e
 cuadro_precios = DataFrame(precios, columns=['Tipo de Opción', 'Clase','Precio'], index=['1. ', '2. ','3. ','4. '])
 index = cuadro_precios.index
 index.name = 'Resumen'
-cuadro_precios.round(6)
+print(cuadro_precios.round(6))
