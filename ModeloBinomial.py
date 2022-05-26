@@ -26,7 +26,7 @@ def nodos(s,u,d,n):
         i+=1
     return lista_nodos
 
-def tabla(s,opcion,T,n,r,k,u,d,v,Dt,Probabilidad,uno_probabilidad):
+def tabla(s,opcion,T,n,r,k,u,d,sigma,Dt,Probabilidad,uno_probabilidad):
     if opcion == 1:
         option = 'Call Europeo'
     elif opcion ==2:
@@ -35,15 +35,15 @@ def tabla(s,opcion,T,n,r,k,u,d,v,Dt,Probabilidad,uno_probabilidad):
         option = 'Call Americano'
     elif opcion == 4:
         option = 'Put Americano'
-    if v == 0:
+    if sigma == 0:
         datos={'Dato         ':['Opción','S0','k','T','n','r','u','d','Dt','Probabilidad a la alza', 'Probabilidad a la baja'],
         '   Valor ingresado   ':[option, s,k,T,n,r,u,d,Dt,Probabilidad,uno_probabilidad]}
         tabla_datos = DataFrame(datos, columns = ['Dato         ','   Valor ingresado   '], 
         index=['Tipo de opción','Precio incial del activo subyacente','Precio de ejercicio','Tiempo de vencimiento','Número de periodos',
         'Tasa libre de riesgo','Porcentaje de subida','Porcentaje de bajada', 'Delta t', 'Probabilidad a la alza', 'Probabilidad a la baja'])
     else:
-        datos={'Dato         ':['Opción','S0','k','T','n','r','v','u','d','Dt','Probabilidad a la alza', 'Probabilidad a la baja'],
-        '   Valor ingresado   ':[option, s,k,T,n,r,v,u,d,Dt,Probabilidad,uno_probabilidad]}
+        datos={'Dato         ':['Opción','S0','k','T','n','r','sigma','u','d','Dt','Probabilidad a la alza', 'Probabilidad a la baja'],
+        '   Valor ingresado   ':[option, s,k,T,n,r,sigma,u,d,Dt,Probabilidad,uno_probabilidad]}
         tabla_datos = DataFrame(datos, columns = ['Dato         ','   Valor ingresado   '], 
         index=['Tipo de opción','Precio incial del activo subyacente','Precio de ejercicio','Tiempo de vencimiento','Número de periodos',
         'Tasa libre de riesgo','Volatilidad','Porcentaje de subida','Porcentaje de bajada', 'Delta t', 'Probabilidad a la alza', 'Probabilidad a la baja'])
@@ -183,6 +183,9 @@ Escribe el número de la opción que será valuada
 3) Call Americano
 4) Put Americano 
  """)) 
+
+print(f'---Su selección fue el inciso {opcion} ---\n')
+
 modelo = input("""
 ¿Qué modelo quieres utilizar para valuar la opción? 
 A) Binomial
@@ -190,7 +193,6 @@ B) Binomial con volatilidad
 C) Black & Scholes - Merton
 """)
 modelo = modelo.upper()
-print(f'---Su selección fue el inciso {opcion} ---\n')
 s      = float(input("Indica el precio incial del activo subyacente: "))
 k      = float(input("Indica el precio de ejercicio: "))
 T      = float(input("Indica el tiempo de vencimiento en meses: "))
@@ -201,13 +203,13 @@ if modelo == 'A':
     Dt = T/n
     u  = float(input("Indica el porcentaje/probabilidad de subida con la unidad (Ej. 1.05): "))
     d  = float(input("Indica el porcentaje/probabilidad de bajada con la unidad (Ej. 0.95): "))
-    v  = 0
+    sigma  = 0
 elif modelo == 'B':
     n  = int(input("Indica el número de periodos: "))
     Dt = T/n
-    v  = float(input("Indica la volatilidad de manera decimal (Ej. 0.25)"))
-    u  = np.exp(v*np.sqrt(Dt))
-    d  = np.exp(-v*np.sqrt(Dt))
+    sigma  = float(input("Indica la volatilidad de manera decimal (Ej. 0.25): "))
+    u  = np.exp(sigma*np.sqrt(Dt))
+    d  = np.exp(-sigma*np.sqrt(Dt))
 elif modelo == 'C':
     pass
 
@@ -219,7 +221,7 @@ def main():
     ---------------------------------------
     || Resumen de los datos introducidos ||
     ---------------------------------------""")
-    tabla(s,opcion,T,n,r,k,u,d,v,Dt,Probabilidad,uno_probabilidad)
+    tabla(s,opcion,T,n,r,k,u,d,sigma,Dt,Probabilidad,uno_probabilidad)
     nodos(s,u,d,n)
     l = mbinomial(s,n,r,k,u,d,Dt,Probabilidad,uno_probabilidad)
     if opcion == 1:
