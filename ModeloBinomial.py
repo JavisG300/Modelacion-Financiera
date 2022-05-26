@@ -1,4 +1,3 @@
-from ast import Pass
 from pandas import DataFrame #Para hacer una tabla con los datos
 from math import factorial,exp,sqrt,log
 from scipy.stats import norm
