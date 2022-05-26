@@ -166,7 +166,7 @@ def mbinomial(s,n,r,k,u,d,sigma,Dt,Probabilidad,uno_probabilidad): #Funcion para
     return valor_del_call, valor_del_put, valor_del_call_americano, valor_del_put_americano
 
 def tabla_comparativa():
-    uno = mbinomial(s,n,r,k,u,d,Dt,Probabilidad,uno_probabilidad)
+    uno = mbinomial(s,n,r,k,u,d,sigma,Dt,Probabilidad,uno_probabilidad)
     datos={'Opción':['Europeo', 'Europeo','Americano', 'Americano'], 'Precio':[uno[0],uno[1],uno[2],uno[3]]}
     tabla_datos = DataFrame(datos, columns = ['Opción','Precio'], 
     index=['Call','Put','Call','Put'])
