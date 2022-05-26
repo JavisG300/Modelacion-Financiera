@@ -180,10 +180,10 @@ def blancscholes(s,k,T,r,sigma,opcion):
     d2 = d1 - (sigma*sqrt(T))
     if opcion == 1:
         c = s * norm.cdf(d1) - k*exp(-r*T)*norm.cdf(d2)
-        print(f' El valor del Call es {c}')
+        print(f' El valor del {option} es {c}')
     else:
         p = k*exp(-r*T)*norm.cdf(-d2) - s * norm.cdf(-d1) 
-        print(f' El valor del Call es {p}')
+        print(f' El valor del {option} es {p}')
     
 print("""
 --------------------------------------------------------------------
