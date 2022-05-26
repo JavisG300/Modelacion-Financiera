@@ -95,21 +95,25 @@ def mbinomial(s,T,n,r,k,u,d): #Funcion para determinar el precio de las opcion
         up = nodo_evaluar*u
         maxup_call = max(up-k,0)
         maxup_put = max(k-up,0)
+
         down = nodo_evaluar*d                 
         maxdown_call = max(down-k,0)
         maxdown_put = max(k-down,0)
+
         call = valor_presenteT*(maxup_call*Propabilidad + maxdown_call*uno_probabilidad)
         put = valor_presenteT*(maxup_put*Propabilidad + maxdown_put*uno_probabilidad)
         rendimiento_ejercer_call = max(nodo_evaluar-k,0)
         rendimiento_ejercer_put = max(k-nodo_evaluar,0)
+        
         if rendimiento_ejercer_call >= call:
             lcu_y_cd_call[i] = rendimiento_ejercer_call
         else:
             lcu_y_cd_call[i] = call         #Hasta aquí solo han cambiado los penultimos del call
+
         if rendimiento_ejercer_put >= put:
             lcu_y_cd_put[i] = rendimiento_ejercer_put
         else:
-            lcu_y_cd_call[i] = put         #Hasta aquí solo han cambiado los penultimos del put
+            lcu_y_cd_put[i] = put         #Hasta aquí solo han cambiado los penultimos del put
 
 #Vamos a comparar las listas lcy_y_lcd vs lcu_ylcd_call y la del put para esto se necesitan en orden Ascendente
     lcu_y_cd = lcu_y_cd[::-1]
@@ -141,6 +145,7 @@ def mbinomial(s,T,n,r,k,u,d): #Funcion para determinar el precio de las opcion
         else:
             lcu_y_cd_call[indice_call-1] = call
         indice_call = indice_call -1 
+
         if rendimiento_ejercer_put >= put:
             lcu_y_cd_put[indice_put-1] = rendimiento_ejercer_put
         else:
