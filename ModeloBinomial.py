@@ -1,6 +1,6 @@
 from pandas import DataFrame #Para hacer una tabla con los datos
-from math import factorial,exp,sqrt,log
-from scipy.stats import norm
+from math import exp,sqrt,log
+from scipy.stats import norm, binom
 
 def nodos(s,u,d,n):
     numeros = [numero+1 for numero in range(1,n+1)]
@@ -75,9 +75,8 @@ def mbinomial(s,n,r,k,u,d,sigma,Dt,Probabilidad,uno_probabilidad): #Funcion para
         cu = max(lcu_y_cd[i]-k,0)
         #Put Europeo
         pu = max(k-lcu_y_cd[i],0)
-        combinacion = factorial(n)/((factorial(i))*(factorial(n-i)))
-        cuenta_call = cuenta_call + combinacion*(Probabilidad**(n-i))*((uno_probabilidad)**i)*cu
-        cuenta_put = cuenta_put + combinacion*(Probabilidad**(n-i))*((uno_probabilidad)**i)*pu 
+        cuenta_call  = cuenta_call + binom.pmf(n-i, n, Probabilidad)*cu
+        cuenta_put = cuenta_put + binom.pmf(n-i,n,Probabilidad)*pu
     valor_del_call = valor_presente1 * cuenta_call
     valor_del_put = valor_presente1 * cuenta_put
 
