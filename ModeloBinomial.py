@@ -46,6 +46,10 @@ def tabla(s,opcion,T,n,r,k,u,d,sigma,Dt,Probabilidad,uno_probabilidad):
         index=['Tipo de opción','Precio incial del activo subyacente','Precio de ejercicio','Tiempo de vencimiento','Número de periodos',
         'Tasa libre de riesgo','Volatilidad','Porcentaje de subida','Porcentaje de bajada', 'Delta t', 'Probabilidad a la alza', 'Probabilidad a la baja'])
     print('\n')
+    print("""
+        ---------------------------------------
+        || Resumen de los datos introducidos ||
+        ---------------------------------------""")
     print(tabla_datos.round(4))
 
 def mbinomial(s,n,r,k,u,d,sigma,Dt,Probabilidad,uno_probabilidad): #Funcion para determinar el precio de las opcion
@@ -53,8 +57,8 @@ def mbinomial(s,n,r,k,u,d,sigma,Dt,Probabilidad,uno_probabilidad): #Funcion para
         u = u
         d = d
     else:
-        u  = round(exp(sigma*sqrt(Dt)),10)
-        d  = round(1/u,10)
+        u  = round(u,10)
+        d  = round(d,10)
     valor_presente1 = exp(-n*r*Dt)
     valor_presenteT = exp(-r*Dt)
 
@@ -162,31 +166,29 @@ def mbinomial(s,n,r,k,u,d,sigma,Dt,Probabilidad,uno_probabilidad): #Funcion para
 
     return valor_del_call, valor_del_put, valor_del_call_americano, valor_del_put_americano
 
-def blancscholes(s,k,T,r,sigma,opcion):
-    if opcion == 1:
-        option = 'Call Europeo'
-    elif opcion ==2:
-        option =  'Put Europeo'
-    datos={'Dato         ':['Opción','S0','k','T','r','sigma'],
-    '   Valor ingresado   ':[option,s,k,T,r,sigma]}
-    tabla_datos = DataFrame(datos, columns = ['Dato         ','   Valor ingresado   '], 
-    index=['Tipo de opción','Precio incial del activo subyacente','Precio de ejercicio','Tiempo de vencimiento',
-    'Tasa libre de riesgo','Volatilidad'])
-    print("""
-        ---------------------------------------
-        || Resumen de los datos introducidos ||
-        ---------------------------------------""")
-    print(tabla_datos.round(4))
-
+def blancscholes(s,k,T,r,sigma,opcion):   
     d1 = (log(s/k,exp(1)) + (r + (sigma**2/2)) * T )/(sigma * sqrt(T))
     d2 = d1 - (sigma*sqrt(T))
     if opcion == 1:
         c = s * norm.cdf(d1) - k*exp(-r*T)*norm.cdf(d2)
+        option = 'Call Europeo'
         print(f' \n El valor del {option} es {c}')
     else:
-        p = k*exp(-r*T)*norm.cdf(-d2) - s * norm.cdf(-d1) 
-        print(f' \n El valor del {option} es {p}')
-    
+        c = k*exp(-r*T)*norm.cdf(-d2) - s * norm.cdf(-d1) 
+        option =  'Put Europeo'
+        print(f' \n El valor del {option} es {c}')
+        
+    datos={'Dato         ':['Opción','S0','k','T','r','sigma', 'd1', 'd2','op'],
+    '   Valor ingresado   ':[option,s,k,T,r,sigma,d1,d2,c]}
+    tabla_datos = DataFrame(datos, columns = ['Dato         ','   Valor ingresado   '], 
+    index=['Tipo de opción','Precio incial del activo subyacente','Precio de ejercicio','Tiempo de vencimiento',
+    'Tasa libre de riesgo','Volatilidad','D1', 'D2','Valuación'])
+    print("""
+        --------------------------
+        || Resumen de los datos ||
+        --------------------------""")
+    print(tabla_datos.round(4))
+
 print("""
 --------------------------------------------------------------------
 || Bienvenido a la calculadora de opciones con el modelo binomial || 
@@ -238,10 +240,6 @@ elif modelo == 'C':
 
 def main():
     if modelo == 'A' or modelo == 'B':
-        print("""
-        ---------------------------------------
-        || Resumen de los datos introducidos ||
-        ---------------------------------------""")
         tabla(s,opcion,T,n,r,k,u,d,sigma,Dt,Probabilidad,uno_probabilidad)
         l = mbinomial(s,n,r,k,u,d,sigma,Dt,Probabilidad,uno_probabilidad)
         if opcion == 1:
@@ -267,12 +265,12 @@ def main():
         tabla_datos = DataFrame(datos, columns = ['Opción','Precio'], 
         index=['Call','Put','Call','Put'])
         print('\n')
-        print(tabla_datos.round(4))
+        print(tabla_datos.round(6))
         print('\n')
-        print('\n Si deseas colaborar https://github.com/JavisG300/Modelacion-Financiera/blob/master/ModeloBinomial.py')
     else:
         blancscholes(s,k,T,r,sigma,opcion)
 
 
 if __name__ == '__main__':
     main()
+    print('\n Si deseas colaborar https://github.com/JavisG300/Modelacion-Financiera/blob/master/ModeloBinomial.py')
