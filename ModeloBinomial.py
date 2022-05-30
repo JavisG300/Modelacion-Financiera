@@ -216,7 +216,8 @@ else:
     opcion = float(input("""
 Escribe el número de la opción que será valuada
 1) Call Europeo
-2) Put Europeo"""))
+2) Put Europeo
+"""))
 
 print(f'---Su selección fue el inciso {opcion} ---\n')
 
@@ -262,7 +263,7 @@ def main():
             v = 3
         print('\n')
         print(f'El precio del {tipo} solicitado es:{l[v]} \n')
-        if n <= 5:
+        if n <= 50:
             print(nodos(s,u,d,n))
         print("""
         ---------------------------------------------------------------------------------------------------------------
