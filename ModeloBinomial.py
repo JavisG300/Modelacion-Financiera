@@ -256,6 +256,8 @@ def main():
             v = 3
         print('\n')
         print(f'El precio del {tipo} solicitado es:{l[v]} \n')
+        if n <= 5:
+            print(nodos(s,u,d,n))
         print("""
         ---------------------------------------------------------------------------------------------------------------
         || A continuación se muestra una tabla comparativa de la opción solicitada junto a los demás tipos de opción || 
