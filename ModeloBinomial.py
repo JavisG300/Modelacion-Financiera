@@ -204,14 +204,20 @@ B) Binomial con volatilidad
 C) Black & Scholes - Merton
 """)
 modelo = modelo.upper()
-
-opcion = float(input("""
+if modelo == 'A' or modelo == 'B':
+    opcion = float(input("""
 Escribe el número de la opción que será valuada
 1) Call Europeo
 2) Put Europeo
 3) Call Americano
 4) Put Americano 
  """)) 
+else:
+    opcion = float(input("""
+Escribe el número de la opción que será valuada
+1) Call Europeo
+2) Put Europeo"""))
+
 print(f'---Su selección fue el inciso {opcion} ---\n')
 
 s      = float(input("Indica el precio incial del activo subyacente: "))
